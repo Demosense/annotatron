@@ -1,7 +1,8 @@
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -19,6 +20,7 @@ import { LabelListElementComponent } from './components/label-list-element.compo
 import { PictureButtonComponent } from './components/picture-button.component';
 import { SidenavComponent } from './containers/sidenav.component';
 import { SidenavElementComponent } from './components/sidenav-element.component';
+import { ConfigureComponent } from './containers/configure.component';
 
 import { services } from './services';
 import { CustomSerializer, effects, metaReducers, reducers } from '@app/store';
@@ -31,6 +33,10 @@ export const routes: Routes = [
     component: MainComponent,
   },
   {
+    path: 'configure',
+    component: ConfigureComponent,
+  },
+  {
     path: '**',
     redirectTo: '',
   }
@@ -40,6 +46,7 @@ export const routes: Routes = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(routes),
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
@@ -57,7 +64,8 @@ export const routes: Routes = [
     LabelListElementComponent,
     PictureButtonComponent,
     SidenavComponent,
-    SidenavElementComponent
+    SidenavElementComponent,
+    ConfigureComponent
   ],
   providers: [
     ...services,
