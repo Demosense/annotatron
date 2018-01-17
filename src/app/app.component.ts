@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
 
+import { Store } from '@ngrx/store';
+
+import * as fromRoot from '@app/store';
+
 @Component({
   selector: 'app-root',
   template: `
     <app-toolbar>
-      <app-toolbar-button icon="folder" (navigate)="console.log()" ></app-toolbar-button>
+      <app-toolbar-button icon="folder" (navigate)="navigateHome()" ></app-toolbar-button>
+      <app-toolbar-button icon="folder" (navigate)="navigateConfigure()" ></app-toolbar-button>
     </app-toolbar>
     <app-sidenav>
       <router-outlet></router-outlet>
@@ -12,4 +17,16 @@ import { Component } from '@angular/core';
   `
 })
 export class AppComponent {
+
+  constructor(
+    private store: Store<fromRoot.State>,
+  ){}
+
+  private navigateHome() {
+   this.store.dispatch(new fromRoot.Go({ path: [''] }));
+  }
+
+  private navigateConfigure() {
+    this.store.dispatch(new fromRoot.Go({ path: ['configure'] }));
+  }
 }
