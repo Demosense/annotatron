@@ -7,8 +7,7 @@ import { Component } from '@angular/core';
       <app-toolbar-button icon="folder" (navigate)="console.log()" ></app-toolbar-button>
     </app-toolbar>
     <app-sidenav>
-      <app-main>
-      </app-main>
+      <router-outlet></router-outlet>
     </app-sidenav>
   `
 })

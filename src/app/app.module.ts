@@ -3,6 +3,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
 import { SharedModule } from '@app/shared/';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar.component';
@@ -15,7 +20,20 @@ import { PictureButtonComponent } from './components/picture-button.component';
 import { SidenavComponent } from './containers/sidenav.component';
 import { SidenavElementComponent } from './components/sidenav-element.component';
 
+import { services } from './services';
+import { CustomSerializer, effects, metaReducers, reducers } from '@app/store';
+
+import { environment } from '@env/environment';
+
 export const routes: Routes = [
+  {
+    path: '',
+    component: MainComponent,
+  },
+  {
+    path: '**',
+    redirectTo: '',
+  }
 ];
 
 @NgModule({
@@ -23,6 +41,10 @@ export const routes: Routes = [
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(routes),
+    StoreModule.forRoot(reducers, { metaReducers }),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    EffectsModule.forRoot(effects),
+    StoreRouterConnectingModule,
     SharedModule,
   ],
   declarations: [
@@ -37,7 +59,10 @@ export const routes: Routes = [
     SidenavComponent,
     SidenavElementComponent
   ],
-  providers: [],
+  providers: [
+    ...services,
+    { provide: RouterStateSerializer, useClass: CustomSerializer },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
