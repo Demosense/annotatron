@@ -19,7 +19,7 @@ import { BoxListElementComponent } from './components/box-list-element.component
 import { LabelListElementComponent } from './components/label-list-element.component';
 import { PictureButtonComponent } from './components/picture-button.component';
 import { SidenavComponent } from './containers/sidenav.component';
-import { SidenavElementComponent } from './components/sidenav-element.component';
+import { SidenavUploadFilesElementComponent } from './components/sidenav-upload-files-element.component';
 import { ConfigureComponent } from './containers/configure.component';
 
 import { services } from './services';
@@ -65,9 +65,9 @@ export const routes: Routes = [
     LabelListElementComponent,
     PictureButtonComponent,
     SidenavComponent,
-    SidenavElementComponent,
     ConfigureComponent,
-    ConfigureEditorComponent
+    ConfigureEditorComponent,
+    SidenavUploadFilesElementComponent
   ],
   providers: [
     ...services,

@@ -3,8 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-picture',
   template: `
-    <canvas></canvas>
-  `,
+    <canvas></canvas>`,
   styles: []
 })
 export class PictureComponent implements OnInit {
