@@ -17,6 +17,14 @@ export class ConfigurerEffects {
     private configurer: ConfigurationService,
   ) {}
 
+  /**
+   * Listens to an Observable of string and parses the content accordingly. Dispatchs
+   * three actions, two for loading the entities and a third one to notify the configuration
+   * reducer of a successful parsing. In case of malformed expression it dispatches a fail action
+   * for the parsing.
+   *
+   * @type {Observable<any>}
+   */
   @Effect()
   parse$ = this.actions$
     .ofType(configurerActions.ConfigurerActionsTypes.ParseConfig)

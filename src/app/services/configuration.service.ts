@@ -8,6 +8,13 @@ export class ConfigurationService {
 
   constructor() { }
 
+  /**
+   * Parses a JSON formatted string into a collection of labels and boxes according to the
+   * specific models.
+   *
+   * @param {string} configString JSON formatted string. Must contain two array props called labels and boxes
+   * @returns {{labels: Label[]; boxes: Box[]}}
+   */
   public parseConfigString(configString: string): { labels: Label[], boxes: Box[] } {
     const collection = JSON.parse(configString);
     const { labels, boxes } = collection;
