@@ -10,10 +10,15 @@ export class ConfigurationService {
 
   public parseConfigString(configString: string): { labels: Label[], boxes: Box[] } {
     const collection = JSON.parse(configString);
-    console.log(collection);
     const { labels, boxes } = collection;
-    console.log(labels);
-    console.log(boxes);
+
+    if (!Array.isArray(labels)) {
+      throw new Error('Config must contain labels property as an array of valid labels');
+    }
+    if (!Array.isArray(boxes)) {
+      throw new Error('Config must contain boxes property as an array of valid boxes');
+    }
+
     return { labels, boxes };
   }
 
