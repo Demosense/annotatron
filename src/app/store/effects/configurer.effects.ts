@@ -6,6 +6,7 @@ import { of } from 'rxjs/observable/of';
 
 import * as configurerActions from '../actions/configurer.actions';
 import * as labelActions from '../actions/labels.actions';
+import * as boxesActions from '../actions/boxes.actions';
 import { ConfigurationService } from '@app/services';
 
 @Injectable()
@@ -26,6 +27,7 @@ export class ConfigurerEffects {
             map(configString => this.configurer.parseConfigString(configString)),
             mergeMap(({ labels, boxes }) => [
               new labelActions.LoadLabelsSuccess(labels),
+              new boxesActions.LoadBoxesSuccess(boxes),
               new configurerActions.ParseConfigSuccess(),
             ]),
             catchError( err => of(new configurerActions.ParseConfigFail(err))),
