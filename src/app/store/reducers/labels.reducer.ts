@@ -35,9 +35,7 @@ export function reducer(
             [label.id]: label,
           };
         },
-        {
-          ...state.entities,
-        }
+        {} // Remove all previous entities
       );
 
       return {
