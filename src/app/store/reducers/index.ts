@@ -25,12 +25,14 @@ import { localStorageSync } from 'ngrx-store-localstorage';
 import * as fromBoxes from './boxes.reducer';
 import * as fromLabels from './labels.reducer';
 import * as fromPictures from './pictures.reducer';
+import * as fromConfigurer from './configurer.reducer';
 
 export interface State {
   routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
   boxes: fromBoxes.BoxState;
   labels: fromLabels.LabelState;
   pictures: fromPictures.PictureState;
+  configurer: fromConfigurer.ConfigurerState;
 }
 
 export const reducers: ActionReducerMap<State> = {
@@ -38,6 +40,7 @@ export const reducers: ActionReducerMap<State> = {
   boxes: fromBoxes.reducer,
   labels: fromLabels.reducer,
   pictures: fromPictures.reducer,
+  configurer: fromConfigurer.reducer,
 };
 
 // console.log all actions
@@ -51,7 +54,7 @@ export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
 }
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-  return localStorageSync({keys: [], rehydrate: true})(reducer);
+  return localStorageSync({keys: ['configurer'], rehydrate: true})(reducer);
 }
 
 export const metaReducers: MetaReducer<State>[] = !environment.production

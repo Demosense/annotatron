@@ -1,27 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+
+import * as fromRoot from '@app/store';
 
 @Component({
   selector: 'app-configure',
   template: `
     <mat-card>
      <mat-card-content>
-       <form [formGroup]="form" >
-         <mat-form-field>
-        <textarea
-          matInput
-          formControlName="jsonFile"
-          matTextareaAutosize
-          matAutosizeMinRows="2"
-          matAutosizeMaxRows="20" ></textarea>
-         </mat-form-field>
-         <div>
-           <button 
-             mat-button 
-             (click)="parseFile()"
-             color="primary" >Parse File</button>
-         </div>
-       </form>
+       <app-configure-editor [configString]="configString$ | async" (saveConfig)="parseFile($event)" ></app-configure-editor>
      </mat-card-content>
     </mat-card>
   `,
@@ -29,19 +17,19 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class ConfigureComponent implements OnInit {
 
-  form: FormGroup;
+  configString$: Observable<string>;
 
-  constructor() {
-    this.form = new FormGroup({
-      jsonFile: new FormControl(''),
-    });
+  constructor(
+    private store: Store<fromRoot.State>,
+  ) {
+    this.configString$ = this.store.select(fromRoot.getConfigurerConfigString);
   }
 
   ngOnInit() {
   }
 
-  parseFile() {
-    console.log(JSON.parse(this.form.value.jsonFile));
+  parseFile(configString: string) {
+    this.store.dispatch(new fromRoot.ParseConfig(configString));
   }
 
 }

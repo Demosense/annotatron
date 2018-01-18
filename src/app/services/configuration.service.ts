@@ -8,6 +8,15 @@ export class ConfigurationService {
 
   constructor() { }
 
+  public parseConfigString(configString: string): { labels: Label[], boxes: Box[] } {
+    const collection = JSON.parse(configString);
+    console.log(collection);
+    const { labels, boxes } = collection;
+    console.log(labels);
+    console.log(boxes);
+    return { labels, boxes };
+  }
+
   public getLabels(): Observable<Label[]> {
     return;
   }

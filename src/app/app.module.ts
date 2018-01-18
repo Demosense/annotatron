@@ -26,6 +26,7 @@ import { services } from './services';
 import { CustomSerializer, effects, metaReducers, reducers } from '@app/store';
 
 import { environment } from '@env/environment';
+import { ConfigureEditorComponent } from './components/configure-editor.component';
 
 export const routes: Routes = [
   {
@@ -65,7 +66,8 @@ export const routes: Routes = [
     PictureButtonComponent,
     SidenavComponent,
     SidenavElementComponent,
-    ConfigureComponent
+    ConfigureComponent,
+    ConfigureEditorComponent
   ],
   providers: [
     ...services,
