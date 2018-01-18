@@ -27,12 +27,12 @@ export function reducer(
 
     case fromBoxes.BoxesActionTypes.LoadBoxesSuccess: {
       const boxes = action.payload;
-
+      let index = 0;
       const entities = boxes.reduce(
         (collection: { [id: number]: Box }, box: Box) => {
           return {
             ...collection,
-            [box.id]: box,
+            [index++]: box,
           };
         },
         {} // Remove all previous entities

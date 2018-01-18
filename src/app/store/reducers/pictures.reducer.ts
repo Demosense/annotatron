@@ -27,12 +27,12 @@ export function reducer(
 
     case fromPictures.PicturesActionTypes.LoadPicturesSuccess: {
       const pictures = action.payload;
-
+      let index = 0;
       const entities = pictures.reduce(
         (collection: { [id: number]: Picture }, picture: Picture) => {
           return {
             ...collection,
-            [picture.id]: picture,
+            [index++]: picture,
           };
         },
         {} // Remove all previous entities
