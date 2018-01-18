@@ -8,9 +8,13 @@ import {SidenavElement} from '@app/models/sidenav-element';
       <mat-sidenav mode="side" opened="true" class="mat-elevation-z6">
         <mat-nav-list>
           <app-sidenav-upload-files-element
-            [sidenavElement]="sidenavElement"
-            (uploadImages)="onUploadFiles($event)">
+            [sidenavElement]="sidenavElements[0]"
+            (upload)="onUploadPictures($event)">
           </app-sidenav-upload-files-element>
+          <app-sidenav-remove-files-element
+            [sidenavElement]="sidenavElements[1]"
+            (remove)="onRemovePictures()">
+          </app-sidenav-remove-files-element>
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content fxLayout="row" fxLayoutAlign="center stretch" fxLayoutGap="10px">
@@ -28,19 +32,28 @@ import {SidenavElement} from '@app/models/sidenav-element';
 })
 export class SidenavComponent implements OnInit {
 
-  sidenavElement: SidenavElement = {
-    name: 'Upload Pictures',
-    icon: 'image'
-  };
+  sidenavElements: SidenavElement[] = [
+    {
+      name: 'Upload Pictures',
+      icon: 'image'
+    },
+    {
+      name: 'Remove Pictures',
+      icon: 'delete'
+    }
+  ];
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  onUploadFiles(event: Event) {
+  onUploadPictures(event: Event) {
     console.log(event);
-    // this.store.dispatch(new fromStore.CreatePizza(event));
+    // this.store.dispatch(new fromStore.LoadPictures(event));
   }
 
+  onRemovePictures() {
+    return;
+  }
 }

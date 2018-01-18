@@ -7,23 +7,27 @@ import { SidenavElement } from '@app/models/sidenav-element';
     <a mat-list-item (click)="selectFile()">
       <mat-icon mat-list-icon>{{ sidenavElement.icon }}</mat-icon>
       <p mat-line>{{ sidenavElement.name }}</p>
-      <input id="uploadFiles" type="file" (change)="onSelectFiles($event)" multiple #inputFile style="display: none">
+      <input type="file" (change)="uploadPictures($event)" multiple #inputFiles>
     </a>
   `,
-  styles: []
+  styles: [`
+    input {
+      display: none;
+    }
+  `]
 })
 export class SidenavUploadFilesElementComponent implements OnInit {
   @Input() sidenavElement: SidenavElement;
-  @Output() uploadImages = new EventEmitter<any>();
-  @ViewChild('inputFile') nativeInputFile: ElementRef;
+  @Output() upload = new EventEmitter<any>();
+  @ViewChild('inputFiles') nativeInputFile: ElementRef;
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  public onSelectFiles(event) {
-    this.uploadImages.emit(event.target.files);
+  public uploadPictures(event) {
+    this.upload.emit(event.target.files);
     // for (const f of event.target.files) {
     //   const reader = new FileReader();
     //   reader.readAsDataURL(f);
