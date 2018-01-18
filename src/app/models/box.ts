@@ -1,11 +1,11 @@
 export interface Box {
-  id: string;
+  id: number;
   name: string;
   color: string;
 }
 
 export interface BoxValue {
-  id: string;
+  id: number;
   points: {
     x0: number;
     y0: number;
