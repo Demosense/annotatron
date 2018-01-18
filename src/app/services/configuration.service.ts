@@ -22,11 +22,4 @@ export class ConfigurationService {
     return { labels, boxes };
   }
 
-  public getLabels(): Observable<Label[]> {
-    return;
-  }
-
-  public getBoxes(): Observable<Box[]> {
-    return;
-  }
 }

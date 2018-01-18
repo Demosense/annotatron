@@ -29,6 +29,8 @@ export class ConfigureComponent implements OnInit {
   }
 
   parseFile(configString: string) {
+    this.store.dispatch(new fromRoot.RemoveBoxes());
+    this.store.dispatch(new fromRoot.RemoveLabels());
     this.store.dispatch(new fromRoot.ParseConfig(configString));
   }
 

@@ -4,13 +4,11 @@ import { Label } from '@app/models';
 export interface LabelState {
   entities: { [id: number]: Label };
   loaded: boolean;
-  loading: boolean;
 }
 
 const initialState: LabelState = {
   entities: {},
   loaded: false,
-  loading: false,
 };
 
 export function reducer(
@@ -18,14 +16,8 @@ export function reducer(
   action: fromLabels.LabelsActions
 ): LabelState {
   switch (action.type) {
-    case fromLabels.LabelsActionTypes.LoadLabels: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
 
-    case fromLabels.LabelsActionTypes.LoadLabelsSuccess: {
+    case fromLabels.LabelsActionTypes.LoadLabels: {
       const labels = action.payload;
       let index = 0;
       const entities = labels.reduce(
@@ -40,18 +32,13 @@ export function reducer(
 
       return {
         ...state,
-        loading: false,
         loaded: true,
         entities,
       };
     }
 
-    case fromLabels.LabelsActionTypes.LoadLabelsFail: {
-      return {
-        ...state,
-        loading: false,
-        loaded: false,
-      };
+    case fromLabels.LabelsActionTypes.RemoveLabels: {
+      return initialState;
     }
   }
   return state;

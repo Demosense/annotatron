@@ -4,13 +4,11 @@ import { Box } from '@app/models';
 export interface BoxState {
   entities: { [id: number]: Box };
   loaded: boolean;
-  loading: boolean;
 }
 
 const initialState: BoxState = {
   entities: {},
   loaded: false,
-  loading: false,
 };
 
 export function reducer(
@@ -18,14 +16,8 @@ export function reducer(
   action: fromBoxes.BoxesActions
 ): BoxState {
   switch (action.type) {
-    case fromBoxes.BoxesActionTypes.LoadBoxes: {
-      return {
-        ...state,
-        loading: true,
-      };
-    }
 
-    case fromBoxes.BoxesActionTypes.LoadBoxesSuccess: {
+    case fromBoxes.BoxesActionTypes.LoadBoxes: {
       const boxes = action.payload;
       let index = 0;
       const entities = boxes.reduce(
@@ -40,18 +32,13 @@ export function reducer(
 
       return {
         ...state,
-        loading: false,
         loaded: true,
         entities,
       };
     }
 
-    case fromBoxes.BoxesActionTypes.LoadBoxesFail: {
-      return {
-        ...state,
-        loading: false,
-        loaded: false,
-      };
+    case fromBoxes.BoxesActionTypes.RemoveBoxes: {
+      return initialState;
     }
   }
   return state;

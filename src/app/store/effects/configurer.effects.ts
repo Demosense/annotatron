@@ -26,8 +26,8 @@ export class ConfigurerEffects {
           .pipe(
             map(configString => this.configurer.parseConfigString(configString)),
             mergeMap(({ labels, boxes }) => [
-              new labelActions.LoadLabelsSuccess(labels),
-              new boxesActions.LoadBoxesSuccess(boxes),
+              new labelActions.LoadLabels(labels),
+              new boxesActions.LoadBoxes(boxes),
               new configurerActions.ParseConfigSuccess(),
             ]),
             catchError( err => of(new configurerActions.ParseConfigFail(err))),
