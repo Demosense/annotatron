@@ -44,3 +44,6 @@ export function reducer(
   return state;
 }
 
+export const getLabelsEntities = (state: LabelState) => state.entities;
+export const getLabelsLoaded = (state: LabelState) => state.loaded;
+
