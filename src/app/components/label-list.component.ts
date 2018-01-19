@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Label } from '@app/models';
 
@@ -6,9 +6,11 @@ import { Label } from '@app/models';
   selector: 'app-label-list',
   template: `
     <mat-list>
-      <app-label-list-element 
+      <app-label-list-element
         *ngFor="let label of labels"
-        [label]="label" ></app-label-list-element>
+        [label]="label"
+        (changeValue)="updateLabel(label.id, $event)">
+      </app-label-list-element>
     </mat-list>
   `,
   styles: []
@@ -16,10 +18,15 @@ import { Label } from '@app/models';
 export class LabelListComponent implements OnInit {
 
   @Input() labels: Label[];
+  @Output() updates = new EventEmitter<{ id: number, value: string}>();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  private updateLabel(id: number, value: string) {
+    this.updates.emit({ id, value });
   }
 
 }

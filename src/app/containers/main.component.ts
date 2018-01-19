@@ -30,7 +30,10 @@ import * as fromRoot from '@app/store';
             <mat-card-title>Boxes</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <app-box-list [boxes]="boxes$ | async" ></app-box-list>
+            <app-box-list
+            [boxes]="boxes$ | async"
+            (select)="selectBox($event)">
+            </app-box-list>
           </mat-card-content>
         </mat-card>
 
@@ -39,11 +42,13 @@ import * as fromRoot from '@app/store';
             <mat-card-title>Labels</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <app-label-list [labels]="labels$ | async" ></app-label-list>
+            <app-label-list
+              [labels]="labels$ | async"
+              (updates)="updateLabel($event)">
+            </app-label-list>
           </mat-card-content>
         </mat-card>
       </div>
-
 
     </div>
   `,
@@ -64,4 +69,12 @@ export class MainComponent implements OnInit {
   ngOnInit() {
   }
 
+  private updateLabel(event: { id: number, value: string}) {
+    console.log(event);
+  }
+
+  private selectBox(event: number) {
+    console.log(event);
+  }
 }
+
