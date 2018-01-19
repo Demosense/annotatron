@@ -14,14 +14,14 @@ import {tap} from 'rxjs/operators';
 
       <mat-card>
         <mat-card-header>
-          <mat-card-title>Picture Title</mat-card-title>
+          <mat-card-title>{{ (picture$ | async).file | slice:0:20 }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <app-picture [picture]="picture$ | async"></app-picture>
         </mat-card-content>
-        <mat-card-actions>
-          <app-picture-button [icon]="'favorite'"></app-picture-button>
-          <app-picture-button icon="favorite"></app-picture-button>
+        <mat-card-actions fxLayoutAlign="center center">
+          <app-picture-button [icon]="'keyboard_arrow_left'"></app-picture-button>
+          <app-picture-button [icon]="'keyboard_arrow_right'"></app-picture-button>
         </mat-card-actions>
       </mat-card>
 

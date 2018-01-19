@@ -10,11 +10,7 @@ import { SidenavElement } from '@app/models/sidenav-element';
       <input type="file" (change)="uploadPictures($event)" multiple #inputFiles>
     </a>
   `,
-  styles: [`
-    input {
-      display: none;
-    }
-  `]
+  styles: []
 })
 export class SidenavUploadFilesElementComponent implements OnInit {
   @Input() sidenavElement: SidenavElement;
@@ -27,6 +23,7 @@ export class SidenavUploadFilesElementComponent implements OnInit {
   }
 
   public uploadPictures(event) {
+    console.log(event);
     this.upload.emit(event);
   }
 

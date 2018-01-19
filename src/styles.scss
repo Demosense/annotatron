@@ -8,9 +8,8 @@ body {
   font-family: Roboto, sans-serif;
 }
 
-app-picture {
-  canvas {
-    height: 600px;
-    width: 400px;
+app-sidenav-upload-files-element {
+  input {
+    display: none;
   }
 }
