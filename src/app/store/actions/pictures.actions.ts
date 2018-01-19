@@ -1,6 +1,6 @@
   import { Action } from '@ngrx/store';
 
-import { Picture, PictureUpload } from '@app/models';
+import { Picture } from '@app/models';
 
 export enum PicturesActionTypes {
   LoadPictures = '[Root] LoadPictures',

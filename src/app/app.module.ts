@@ -30,6 +30,8 @@ import { ConfigureEditorComponent } from './components/configure-editor.componen
 import { SidenavRemoveFilesElementComponent } from './components/sidenav-remove-files-element.component';
 import { BoxListComponent } from './components/box-list.component';
 import { LabelListComponent } from './components/label-list.component';
+import { SidenavPictureElementComponent } from './components/sidenav-picture-element.component';
+import { SidenavPictureListComponent } from './components/sidenav-picture-list.component';
 
 export const routes: Routes = [
   {
@@ -74,6 +76,8 @@ export const routes: Routes = [
     SidenavRemoveFilesElementComponent,
     BoxListComponent,
     LabelListComponent,
+    SidenavPictureElementComponent,
+    SidenavPictureListComponent,
   ],
   providers: [
     ...services,

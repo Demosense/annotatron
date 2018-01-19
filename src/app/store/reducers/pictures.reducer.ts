@@ -1,5 +1,6 @@
 import * as fromPictures from '../actions';
 import { Picture } from '@app/models';
+import {BoxState} from '@app/store/reducers/boxes.reducer';
 
 export interface PictureState {
   entities: { [id: number]: Picture };
@@ -57,3 +58,5 @@ export function reducer(
   return state;
 }
 
+export const getPicturesEntities = (state: PictureState) => state.entities;
+export const getPicturesLoaded = (state: PictureState) => state.loaded;

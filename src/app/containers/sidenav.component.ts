@@ -4,7 +4,9 @@ import {SidenavElement} from '@app/models/sidenav-element';
 import { Store } from '@ngrx/store';
 
 import * as fromStore from '../store';
-import { Picture } from '@app/models';
+import {Box, Picture} from '@app/models';
+import * as fromRoot from '@app/store';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-sidenav',
@@ -20,6 +22,11 @@ import { Picture } from '@app/models';
             [sidenavElement]="sidenavElements[1]"
             (remove)="onRemovePictures()">
           </app-sidenav-remove-files-element>
+          <mat-divider></mat-divider>
+          <app-sidenav-picture-list
+            [pictures]="pictures$ | async"
+            (select)="selectPicture($event)">
+          </app-sidenav-picture-list>
         </mat-nav-list>
       </mat-sidenav>
       <mat-sidenav-content fxLayout="row" fxLayoutAlign="center stretch" fxLayoutGap="10px">
@@ -37,6 +44,7 @@ import { Picture } from '@app/models';
 })
 export class SidenavComponent implements OnInit {
 
+  pictures$: Observable<Picture[]>;
   sidenavElements: SidenavElement[] = [
     {
       name: 'Upload Pictures',
@@ -48,7 +56,11 @@ export class SidenavComponent implements OnInit {
     }
   ];
 
-  constructor(private store: Store<fromStore.State>) { }
+  constructor(
+    private store: Store<fromStore.State>
+  ) {
+    this.pictures$ = this.store.select(fromRoot.getAllPicutres);
+  }
 
   ngOnInit() {
   }
@@ -85,5 +97,9 @@ export class SidenavComponent implements OnInit {
 
   onRemovePictures() {
     return;
+  }
+
+  private selectPicture(event: number) {
+    console.log(event);
   }
 }
