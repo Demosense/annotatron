@@ -4,10 +4,9 @@ import {SidenavElement} from '@app/models/sidenav-element';
 import { Store } from '@ngrx/store';
 
 import * as fromStore from '../store';
-import {Box, Picture} from '@app/models';
+import { Picture} from '@app/models';
 import * as fromRoot from '@app/store';
 import {Observable} from 'rxjs/Observable';
-import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-sidenav',

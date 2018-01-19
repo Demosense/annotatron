@@ -1,5 +1,5 @@
 export interface Label {
-  id: number;
+  id?: number;
   name: string;
   type: LabelTypes;
   range: string[];
