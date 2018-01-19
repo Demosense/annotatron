@@ -24,8 +24,7 @@ import {Observable} from 'rxjs/Observable';
           </app-sidenav-remove-files-element>
           <mat-divider></mat-divider>
           <app-sidenav-picture-list
-            [pictures]="pictures$ | async"
-            (select)="selectPicture($event)">
+            [pictures]="pictures$ | async">
           </app-sidenav-picture-list>
         </mat-nav-list>
       </mat-sidenav>
@@ -74,19 +73,19 @@ export class SidenavComponent implements OnInit {
     const upload: Promise<Picture>[] =
       Array.from(event.target.files).map((file: any) => {
         const reader = new FileReader();
-        console.log(file);
         return new Promise((resolve, reject) => {
           reader.onload = (e: any) => {
             const image = new Image();
             image.src = e.target.result;
-            resolve({
-              file: file.name,
-              data: e.target.result,
-              width: image.width,
-              height: image.height,
-              labels: [],
-              boxes: []
-            });
+            image.onload = () =>
+              resolve({
+                file: file.name,
+                data: e.target.result,
+                width: image.width,
+                height: image.height,
+                labels: [],
+                boxes: []
+              });
           }
           reader.onerror = (err) => reject(err);
           reader.readAsDataURL(file);
@@ -103,9 +102,5 @@ export class SidenavComponent implements OnInit {
 
   onRemovePictures() {
     return;
-  }
-
-  private selectPicture(event: number) {
-    console.log(event);
   }
 }

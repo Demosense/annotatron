@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Picture } from '@app/models';
 
 @Component({
@@ -6,15 +6,14 @@ import { Picture } from '@app/models';
   template: `
     <app-sidenav-picture-element
       *ngFor="let picture of pictures"
-      [picture]="picture"
-      (click)="select.emit(picture.id)"></app-sidenav-picture-element>
+      [picture]="picture">
+    </app-sidenav-picture-element>
   `,
   styles: []
 })
 export class SidenavPictureListComponent implements OnInit {
 
   @Input() pictures: Picture[];
-  @Output() select = new EventEmitter<number>();
 
   constructor() { }
 
