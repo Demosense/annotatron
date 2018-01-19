@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { Label } from '@app/models';
+import { Label, LabelValue } from '@app/models';
 
 @Component({
   selector: 'app-label-list',
@@ -18,7 +18,7 @@ import { Label } from '@app/models';
 export class LabelListComponent implements OnInit {
 
   @Input() labels: Label[];
-  @Output() updates = new EventEmitter<{ id: number, value: string}>();
+  @Output() updates = new EventEmitter<LabelValue>();
 
   constructor() { }
 

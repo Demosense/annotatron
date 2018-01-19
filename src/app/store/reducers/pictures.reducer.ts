@@ -1,5 +1,6 @@
 import * as fromPictures from '../actions';
 import { Picture } from '@app/models';
+import {BoxState} from '@app/store/reducers/boxes.reducer';
 
 export interface PictureState {
   entities: { [id: number]: Picture };
@@ -53,7 +54,37 @@ export function reducer(
         loaded: false,
       };
     }
+
+    case fromPictures.PicturesActionTypes.UpdateLabel: {
+      // Get current state slices
+      const { pictureId, labelValue } = action.payload;
+      const { entities } = state;
+      const picture = entities[pictureId];
+
+      // Check existence
+      if (!picture) {
+        return state;
+      }
+
+      const modEntities = {
+        ...entities,
+        [pictureId]: {
+          ...picture,
+          labels: {
+            ...picture.labels,
+            [labelValue.id]: labelValue,
+          },
+        },
+      };
+      return {
+        ...state,
+        entities: modEntities,
+      };
+    }
   }
+
   return state;
 }
 
+export const getPicturesEntities = (state: PictureState) => state.entities;
+export const getPicturesLoaded = (state: PictureState) => state.loaded;

@@ -1,11 +1,12 @@
 import { Action } from '@ngrx/store';
 
-import { Picture } from '@app/models';
+import { LabelValue, Picture } from '@app/models';
 
 export enum PicturesActionTypes {
   LoadPictures = '[Root] LoadPictures',
   LoadPicturesSuccess = '[Root] LoadPicturesSuccess',
   LoadPicturesFail = '[Root] LoadPicturesFail',
+  UpdateLabel = '[Root] UpdateLabel',
 }
 
 export class LoadPictures implements Action {
@@ -22,7 +23,13 @@ export class LoadPicturesFail implements Action {
   constructor(public payload: Error) {}
 }
 
+export class UpdateLabel implements Action {
+  readonly type = PicturesActionTypes.UpdateLabel;
+  constructor(public payload: { pictureId: number, labelValue: LabelValue }) {}
+}
+
 export type PicturesActions =
   LoadPictures |
   LoadPicturesSuccess |
-  LoadPicturesFail;
+  LoadPicturesFail |
+  UpdateLabel;
