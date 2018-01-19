@@ -24,7 +24,6 @@ export class SidenavPictureElementComponent implements OnInit {
   }
 
   public getImage() {
-    console.log(this.pictureData))
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.pictureData);
   }
 }
