@@ -10,6 +10,7 @@ export enum PicturesActionTypes {
 
 export class LoadPictures implements Action {
   readonly type = PicturesActionTypes.LoadPictures;
+  constructor(public payload: Array<{ name: string, data: string }>) {}
 }
 
 export class LoadPicturesSuccess implements Action {

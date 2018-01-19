@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {SidenavElement} from '@app/models/sidenav-element';
 
+import { Store } from '@ngrx/store';
+import * as fromStore from '../store';
+import { Picture } from '@app/models';
+
 @Component({
   selector: 'app-sidenav',
   template: `
@@ -43,14 +47,31 @@ export class SidenavComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(private store: Store<fromStore.State>) { }
 
   ngOnInit() {
   }
 
-  onUploadPictures(event: Event) {
-    console.log(event);
-    // this.store.dispatch(new fromStore.LoadPictures(event));
+  onUploadPictures(event: any) {
+    const uploadFiles = [];
+    // for (const f of event.target.files) {
+    //   const reader = new FileReader();
+    //   reader.readAsDataURL(f);
+    //   reader.onload = (e: any) => {
+    //     const o = { name: '', data: '' };
+    //     uploadFiles.push('');
+    //   };
+    // }
+    //
+    // event.target.file.map(f => {
+    //   const reader = new FileReader();
+    //     reader.readAsDataURL(f);
+    //     reader.onload = (e: any) => {
+    //       const o = { name: '', data: '' };
+    //       uploadFiles.push('');
+    //     };
+    // });
+    // this.store.dispatch(new fromStore.LoadPictures(uploadFiles));
   }
 
   onRemovePictures() {

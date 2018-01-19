@@ -27,14 +27,7 @@ export class SidenavUploadFilesElementComponent implements OnInit {
   }
 
   public uploadPictures(event) {
-    this.upload.emit(event.target.files);
-    // for (const f of event.target.files) {
-    //   const reader = new FileReader();
-    //   reader.readAsDataURL(f);
-    //   reader.onload = (e) => {
-    //     this.urls.push(e.target.result);
-    //   };
-    // }
+    this.upload.emit(event);
   }
 
   public selectFile() {
