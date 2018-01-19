@@ -33,6 +33,8 @@ import { LabelListComponent } from './components/label-list.component';
 import { SidenavPictureElementComponent } from './components/sidenav-picture-element.component';
 import { SidenavPictureListComponent } from './components/sidenav-picture-list.component';
 
+import * as fromGuards from './guards';
+
 export const routes: Routes = [
   {
     path: '',
@@ -41,6 +43,11 @@ export const routes: Routes = [
   {
     path: 'configure',
     component: ConfigureComponent,
+  },
+  {
+    path: ':pictureId',
+    canActivate: [fromGuards.PictureGuards],
+    component: MainComponent,
   },
   {
     path: '**',
@@ -82,6 +89,7 @@ export const routes: Routes = [
   providers: [
     ...services,
     { provide: RouterStateSerializer, useClass: CustomSerializer },
+    ...fromGuards.guards
   ],
   bootstrap: [AppComponent]
 })

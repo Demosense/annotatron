@@ -7,6 +7,7 @@ import * as fromStore from '../store';
 import {Box, Picture} from '@app/models';
 import * as fromRoot from '@app/store';
 import {Observable} from 'rxjs/Observable';
+import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-sidenav',
@@ -59,7 +60,7 @@ export class SidenavComponent implements OnInit {
   constructor(
     private store: Store<fromStore.State>
   ) {
-    this.pictures$ = this.store.select(fromRoot.getAllPicutres);
+    this.pictures$ = this.store.select(fromRoot.getAllPictures);
   }
 
   ngOnInit() {

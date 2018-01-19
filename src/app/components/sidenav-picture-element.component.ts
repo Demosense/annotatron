@@ -4,10 +4,10 @@ import { Picture } from '@app/models';
 @Component({
   selector: 'app-sidenav-picture-element',
   template: `
-    <mat-list-item>
+    <a mat-list-item [routerLink]="['/', picture.id]">
       <img matListAvatar src="{{ picture.data }}">
       <h4 mat-line>{{ picture.file | slice:0:10 }}</h4>
-    </mat-list-item>
+    </a>
   `,
   styles: []
 })
