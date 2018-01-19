@@ -54,6 +54,9 @@ export class SidenavComponent implements OnInit {
   }
 
   onUploadPictures(event) {
+    // Store devtools cannot serialize event.target.files and thus we must
+    // handle async operation here.
+
     this.store.dispatch(new fromStore.LoadPictures());
 
     const upload: Promise<Picture>[] =
