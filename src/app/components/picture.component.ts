@@ -1,8 +1,8 @@
 import {
   Component,
   ElementRef,
-  Input,
-  OnInit,
+  Input, OnChanges,
+  OnInit, SimpleChanges,
   ViewChild
 } from '@angular/core';
 import {Picture} from '@app/models';
@@ -11,28 +11,18 @@ import {Picture} from '@app/models';
   selector: 'app-picture',
   template: `
     <canvas #layout
-            (mousedown)="mdEvent($event)" 
-            (mouseup)="muEvent($event)" 
+            (mousedown)="mdEvent($event)"
+            (mouseup)="muEvent($event)"
             (mousemove)="mmEvent($event)">
     </canvas>
   `,
   styles: []
 })
-export class PictureComponent implements OnInit {
+export class PictureComponent implements OnInit, OnChanges {
 
-  @Input() set picture(value: Picture) {
-    if (value) {
-      const source = new Image();
-      source.crossOrigin = 'Anonymous';
-      source.onload = () => {
-        this.canvas.nativeElement.height = value.height;
-        this.canvas.nativeElement.width = value.width;
-        this.context.drawImage(source, 0, 0);
-      };
-      // source.src = value.data;
-      // this.data = value.data;
-    }
-  }
+  @Input() picture: Picture;
+  @Input() pictureData: string;
+
   @ViewChild('layout') canvas: ElementRef;
   public context;
   public data;
@@ -46,6 +36,20 @@ export class PictureComponent implements OnInit {
 
   ngOnInit() {
     this.context = this.canvas.nativeElement.getContext('2d');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.picture) {
+      const source = new Image();
+      source.crossOrigin = 'Anonymous';
+      source.onload = () => {
+        this.canvas.nativeElement.height = this.picture.height;
+        this.canvas.nativeElement.width = this.picture.width;
+        this.context.drawImage(source, 0, 0);
+      };
+      source.src = this.pictureData;
+      this.data = this.pictureData;
+    }
   }
 
   public mdEvent(e) {

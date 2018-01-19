@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { map, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import {Box, Label, Picture} from '@app/models';
 import * as fromRoot from '@app/store';
 
 import { LabelValue } from '@app/models/label';
+import { PicturesService } from '@app/services';
 
 @Component({
   selector: 'app-main',
@@ -17,7 +19,10 @@ import { LabelValue } from '@app/models/label';
           <mat-card-title>{{ (picture$ | async)?.file | slice:0:20 }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <app-picture [picture]="picture$ | async"></app-picture>
+          <app-picture 
+            [picture]="picture$ | async"
+            [pictureData]="pictureData$ | async"
+          ></app-picture>
         </mat-card-content>
         <mat-card-actions fxLayoutAlign="center center">
           <app-picture-button [icon]="'keyboard_arrow_left'"></app-picture-button>
@@ -60,13 +65,19 @@ export class MainComponent implements OnInit {
   boxes$: Observable<Box[]>;
   labels$: Observable<Label[]>;
   picture$: Observable<Picture>;
+  pictureData$: Observable<string>;
 
   constructor(
     private store: Store<fromRoot.State>,
+    private picturesService: PicturesService,
   ) {
     this.boxes$ = this.store.select(fromRoot.getAllBoxes);
     this.labels$ = this.store.select(fromRoot.getAllLabels);
     this.picture$ = this.store.select(fromRoot.getSelectedPicture);
+    this.pictureData$ = this.picturesService.getPictureData().pipe(
+      withLatestFrom(this.picture$),
+      map(([data, picture]) => picture ? data[picture.id] : ''),
+    );
   }
 
   ngOnInit() {
