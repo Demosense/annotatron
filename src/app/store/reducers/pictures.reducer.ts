@@ -1,5 +1,6 @@
 import * as fromPictures from '../actions';
 import { Picture } from '@app/models';
+import {BoxState} from '@app/store/reducers/boxes.reducer';
 
 export interface PictureState {
   entities: { [id: number]: Picture };
@@ -27,12 +28,13 @@ export function reducer(
 
     case fromPictures.PicturesActionTypes.LoadPicturesSuccess: {
       const pictures = action.payload;
-      let index = 0;
+      let index = -1;
       const entities = pictures.reduce(
         (collection: { [id: number]: Picture }, picture: Picture) => {
+          index++;
           return {
             ...collection,
-            [index++]: picture,
+            [index]: { ...picture, id: index },
           };
         },
         {} // Remove all previous entities
@@ -57,3 +59,5 @@ export function reducer(
   return state;
 }
 
+export const getPicturesEntities = (state: PictureState) => state.entities;
+export const getPicturesLoaded = (state: PictureState) => state.loaded;

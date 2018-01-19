@@ -19,7 +19,7 @@ import { BoxListElementComponent } from './components/box-list-element.component
 import { LabelListElementComponent } from './components/label-list-element.component';
 import { PictureButtonComponent } from './components/picture-button.component';
 import { SidenavComponent } from './containers/sidenav.component';
-import { SidenavElementComponent } from './components/sidenav-element.component';
+import { SidenavUploadFilesElementComponent } from './components/sidenav-upload-files-element.component';
 import { ConfigureComponent } from './containers/configure.component';
 
 import { services } from './services';
@@ -27,6 +27,13 @@ import { CustomSerializer, effects, metaReducers, reducers } from '@app/store';
 
 import { environment } from '@env/environment';
 import { ConfigureEditorComponent } from './components/configure-editor.component';
+import { SidenavRemoveFilesElementComponent } from './components/sidenav-remove-files-element.component';
+import { BoxListComponent } from './components/box-list.component';
+import { LabelListComponent } from './components/label-list.component';
+import { SidenavPictureElementComponent } from './components/sidenav-picture-element.component';
+import { SidenavPictureListComponent } from './components/sidenav-picture-list.component';
+
+import * as fromGuards from './guards';
 
 export const routes: Routes = [
   {
@@ -36,6 +43,11 @@ export const routes: Routes = [
   {
     path: 'configure',
     component: ConfigureComponent,
+  },
+  {
+    path: ':pictureId',
+    canActivate: [fromGuards.PictureGuards],
+    component: MainComponent,
   },
   {
     path: '**',
@@ -65,13 +77,19 @@ export const routes: Routes = [
     LabelListElementComponent,
     PictureButtonComponent,
     SidenavComponent,
-    SidenavElementComponent,
     ConfigureComponent,
-    ConfigureEditorComponent
+    ConfigureEditorComponent,
+    SidenavUploadFilesElementComponent,
+    SidenavRemoveFilesElementComponent,
+    BoxListComponent,
+    LabelListComponent,
+    SidenavPictureElementComponent,
+    SidenavPictureListComponent,
   ],
   providers: [
     ...services,
     { provide: RouterStateSerializer, useClass: CustomSerializer },
+    ...fromGuards.guards
   ],
   bootstrap: [AppComponent]
 })

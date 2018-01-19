@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SidenavElementComponent } from './sidenav-element.component';
+import { BoxListComponent } from './box-list.component';
 
-describe('SidenavElementComponent', () => {
-  let component: SidenavElementComponent;
-  let fixture: ComponentFixture<SidenavElementComponent>;
+describe('BoxListComponent', () => {
+  let component: BoxListComponent;
+  let fixture: ComponentFixture<BoxListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SidenavElementComponent ]
+      declarations: [ BoxListComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SidenavElementComponent);
+    fixture = TestBed.createComponent(BoxListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -44,3 +44,6 @@ export function reducer(
   return state;
 }
 
+export const getBoxesEntities = (state: BoxState) => state.entities;
+export const getBoxesLoaded = (state: BoxState) => state.loaded;
+
