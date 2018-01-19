@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { Box } from '@app/models';
 
@@ -8,7 +8,8 @@ import { Box } from '@app/models';
     <mat-nav-list>
       <app-box-list-element
         *ngFor="let box of boxes"
-        [box]="box" ></app-box-list-element>
+        [box]="box"
+        (click)="select.emit(box.id)"></app-box-list-element>
     </mat-nav-list>
   `,
   styles: []
@@ -16,6 +17,7 @@ import { Box } from '@app/models';
 export class BoxListComponent implements OnInit {
 
   @Input() boxes: Box[];
+  @Output() select = new EventEmitter<number>();
 
   constructor() { }
 
