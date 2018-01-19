@@ -14,7 +14,7 @@ import { LabelValue } from '@app/models/label';
 
       <mat-card>
         <mat-card-header>
-          <mat-card-title>{{ (picture$ | async).file | slice:0:20 }}</mat-card-title>
+          <mat-card-title>{{ (picture$ | async)?.file | slice:0:20 }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <app-picture [picture]="picture$ | async"></app-picture>
