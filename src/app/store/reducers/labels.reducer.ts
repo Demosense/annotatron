@@ -19,12 +19,13 @@ export function reducer(
 
     case fromLabels.LabelsActionTypes.LoadLabels: {
       const labels = action.payload;
-      let index = 0;
+      let index = -1;
       const entities = labels.reduce(
         (collection: { [id: number]: Label }, label: Label) => {
+          index++;
           return {
             ...collection,
-            [index++]: label,
+            [index]: { ...label, id: index },
           };
         },
         {} // Remove all previous entities

@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 
 import { Box, Label } from '@app/models';
 import * as fromRoot from '@app/store';
+import { LabelValue } from '@app/models/label';
 
 
 @Component({
@@ -69,8 +70,10 @@ export class MainComponent implements OnInit {
   ngOnInit() {
   }
 
-  private updateLabel(event: { id: number, value: string}) {
-    console.log(event);
+  private updateLabel(labelValue: LabelValue) {
+    // TODO: stub replace with actual picture id
+    const pictureId = 0;
+    this.store.dispatch(new fromRoot.UpdateLabel({ pictureId, labelValue }));
   }
 
   private selectBox(event: number) {

@@ -54,7 +54,35 @@ export function reducer(
         loaded: false,
       };
     }
+
+    case fromPictures.PicturesActionTypes.UpdateLabel: {
+      // Get current state slices
+      const { pictureId, labelValue } = action.payload;
+      const { entities } = state;
+      const picture = entities[pictureId];
+
+      // Check existence
+      if (!picture) {
+        return state;
+      }
+
+      const modEntities = {
+        ...entities,
+        [pictureId]: {
+          ...picture,
+          labels: {
+            ...picture.labels,
+            [labelValue.id]: labelValue,
+          },
+        },
+      };
+      return {
+        ...state,
+        entities: modEntities,
+      };
+    }
   }
+
   return state;
 }
 
