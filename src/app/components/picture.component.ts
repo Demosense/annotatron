@@ -26,7 +26,7 @@ export class PictureComponent implements OnInit {
         this.canvas.nativeElement.width = value.width;
         this.context.drawImage(source, 0, 0);
       };
-      source.src = value.data;
+      // source.src = value.data;
     }
   }
   @ViewChild('layout') canvas: ElementRef;

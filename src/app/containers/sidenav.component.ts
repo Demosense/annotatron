@@ -7,6 +7,7 @@ import * as fromStore from '../store';
 import { Picture} from '@app/models';
 import * as fromRoot from '@app/store';
 import {Observable} from 'rxjs/Observable';
+import { PicturesService } from '@app/services';
 
 @Component({
   selector: 'app-sidenav',
@@ -24,7 +25,8 @@ import {Observable} from 'rxjs/Observable';
           </app-sidenav-remove-files-element>
           <mat-divider></mat-divider>
           <app-sidenav-picture-list
-            [pictures]="pictures$ | async">
+            [pictures]="pictures$ | async"
+            [picturesData]="picturesData$ | async">
           </app-sidenav-picture-list>
         </mat-nav-list>
       </mat-sidenav>
@@ -44,6 +46,8 @@ import {Observable} from 'rxjs/Observable';
 export class SidenavComponent implements OnInit {
 
   pictures$: Observable<Picture[]>;
+  picturesData$: Observable<string[]>;
+
   sidenavElements: SidenavElement[] = [
     {
       name: 'Upload Pictures',
@@ -56,9 +60,11 @@ export class SidenavComponent implements OnInit {
   ];
 
   constructor(
-    private store: Store<fromStore.State>
+    private store: Store<fromStore.State>,
+    private picturesService: PicturesService,
   ) {
     this.pictures$ = this.store.select(fromRoot.getAllPictures);
+    this.picturesData$ = this.picturesService.getPictureData();
   }
 
   ngOnInit() {
@@ -70,7 +76,7 @@ export class SidenavComponent implements OnInit {
 
     this.store.dispatch(new fromStore.LoadPictures());
 
-    const upload: Promise<Picture>[] =
+    const upload: Promise<{ data: string, picture: Picture }>[] =
       Array.from(event.target.files).map((file: any) => {
         const reader = new FileReader();
         return new Promise((resolve, reject) => {
@@ -79,12 +85,14 @@ export class SidenavComponent implements OnInit {
             image.src = e.target.result;
             image.onload = () =>
               resolve({
-                file: file.name,
                 data: e.target.result,
-                width: image.width,
-                height: image.height,
-                labels: [],
-                boxes: []
+                picture: {
+                  file: file.name,
+                  width: image.width,
+                  height: image.height,
+                  labels: [],
+                  boxes: []
+                }
               });
           }
           reader.onerror = (err) => reject(err);
@@ -93,8 +101,10 @@ export class SidenavComponent implements OnInit {
       });
 
     Promise.all(upload)
-      .then((pictures: Picture[]) =>
-        this.store.dispatch(new fromStore.LoadPicturesSuccess(pictures))
+      .then((pictures) => {
+          this.picturesService.setPictureData(pictures.map(p => p.data));
+          this.store.dispatch(new fromStore.LoadPicturesSuccess(pictures.map(p => p.picture)));
+      }
       ).catch((err) =>
         this.store.dispatch(new fromStore.LoadPicturesFail(err))
       );

@@ -6,7 +6,8 @@ import { Picture } from '@app/models';
   template: `
     <app-sidenav-picture-element
       *ngFor="let picture of pictures"
-      [picture]="picture">
+      [picture]="picture"
+      [pictureData]="picturesData[picture.id]">
     </app-sidenav-picture-element>
   `,
   styles: []
@@ -14,6 +15,7 @@ import { Picture } from '@app/models';
 export class SidenavPictureListComponent implements OnInit {
 
   @Input() pictures: Picture[];
+  @Input() picturesData: string[];
 
   constructor() { }
 
