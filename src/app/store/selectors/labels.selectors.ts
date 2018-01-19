@@ -11,7 +11,7 @@ export const getLabelsEntities = createSelector(
 );
 
 export const getAllLabels = createSelector(getLabelsEntities, entities => {
-  return Object.keys(entities).map(id => entities[parseInt(id, 10)]);
+  return Object.keys(entities).map(id => ({ id, ...entities[id] }) );
 });
 
 export const getLabelsLoaded = createSelector(
