@@ -28,6 +28,8 @@ import { CustomSerializer, effects, metaReducers, reducers } from '@app/store';
 import { environment } from '@env/environment';
 import { ConfigureEditorComponent } from './components/configure-editor.component';
 import { SidenavRemoveFilesElementComponent } from './components/sidenav-remove-files-element.component';
+import { BoxListComponent } from './components/box-list.component';
+import { LabelListComponent } from './components/label-list.component';
 
 export const routes: Routes = [
   {
@@ -69,7 +71,9 @@ export const routes: Routes = [
     ConfigureComponent,
     ConfigureEditorComponent,
     SidenavUploadFilesElementComponent,
-    SidenavRemoveFilesElementComponent
+    SidenavRemoveFilesElementComponent,
+    BoxListComponent,
+    LabelListComponent,
   ],
   providers: [
     ...services,
