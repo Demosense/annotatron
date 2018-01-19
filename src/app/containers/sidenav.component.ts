@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {SidenavElement} from '@app/models/sidenav-element';
 
 import { Store } from '@ngrx/store';
+
 import * as fromStore from '../store';
 import { Picture } from '@app/models';
 
@@ -52,26 +53,31 @@ export class SidenavComponent implements OnInit {
   ngOnInit() {
   }
 
-  onUploadPictures(event: any) {
-    const uploadFiles = [];
-    // for (const f of event.target.files) {
-    //   const reader = new FileReader();
-    //   reader.readAsDataURL(f);
-    //   reader.onload = (e: any) => {
-    //     const o = { name: '', data: '' };
-    //     uploadFiles.push('');
-    //   };
-    // }
-    //
-    // event.target.file.map(f => {
-    //   const reader = new FileReader();
-    //     reader.readAsDataURL(f);
-    //     reader.onload = (e: any) => {
-    //       const o = { name: '', data: '' };
-    //       uploadFiles.push('');
-    //     };
-    // });
-    // this.store.dispatch(new fromStore.LoadPictures(uploadFiles));
+  onUploadPictures(event) {
+    this.store.dispatch(new fromStore.LoadPictures());
+
+    const upload: Promise<Picture>[] =
+      Array.from(event.target.files).map((file: any) => {
+        const reader = new FileReader();
+        return new Promise((resolve, reject) => {
+          reader.onload = (e: any) =>
+            resolve({
+              file: file.name,
+              data: e.target.result,
+              labels: [],
+              boxes: []
+            });
+          reader.onerror = (err) => reject(err);
+          reader.readAsDataURL(file);
+        });
+      });
+
+    Promise.all(upload)
+      .then((pictures: Picture[]) =>
+        this.store.dispatch(new fromStore.LoadPicturesSuccess(pictures))
+      ).catch((err) =>
+        this.store.dispatch(new fromStore.LoadPicturesFail(err))
+      );
   }
 
   onRemovePictures() {

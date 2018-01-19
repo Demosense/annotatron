@@ -6,3 +6,4 @@ export interface Picture {
   boxes: BoxValue[];
   labels: LabelValue[];
 }
+

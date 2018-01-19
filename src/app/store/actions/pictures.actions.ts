@@ -1,6 +1,6 @@
   import { Action } from '@ngrx/store';
 
-import { Picture } from '@app/models';
+import { Picture, PictureUpload } from '@app/models';
 
 export enum PicturesActionTypes {
   LoadPictures = '[Root] LoadPictures',
@@ -10,7 +10,6 @@ export enum PicturesActionTypes {
 
 export class LoadPictures implements Action {
   readonly type = PicturesActionTypes.LoadPictures;
-  constructor(public payload: Array<{ name: string, data: string }>) {}
 }
 
 export class LoadPicturesSuccess implements Action {
