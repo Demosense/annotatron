@@ -34,6 +34,7 @@ import { SidenavPictureElementComponent } from './components/sidenav-picture-ele
 import { SidenavPictureListComponent } from './components/sidenav-picture-list.component';
 
 import * as fromGuards from './guards';
+import { SidenavDownloadElementComponent } from './components/sidenav-download-element.component';
 
 export const routes: Routes = [
   {
@@ -85,6 +86,7 @@ export const routes: Routes = [
     LabelListComponent,
     SidenavPictureElementComponent,
     SidenavPictureListComponent,
+    SidenavDownloadElementComponent,
   ],
   providers: [
     ...services,

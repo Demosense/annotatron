@@ -9,7 +9,6 @@ import * as fromStore from '../store';
 import * as fromRoot from '@app/store';
 import { Picture} from '@app/models';
 import { PicturesService } from '@app/services';
-import { SidenavElement } from '@app/models/sidenav-element';
 
 @Component({
   selector: 'app-sidenav',
@@ -18,17 +17,15 @@ import { SidenavElement } from '@app/models/sidenav-element';
       <mat-sidenav mode="side" opened="true" class="mat-elevation-z6">
         <mat-nav-list>
           <app-sidenav-upload-files-element
-            [sidenavElement]="sidenavElements[0]"
-            (upload)="onUploadPictures($event)">
+            (upload)="uploadPictures($event)">
           </app-sidenav-upload-files-element>
           <app-sidenav-remove-files-element
-            [sidenavElement]="sidenavElements[1]"
-            (remove)="onRemovePictures()">
+            (click)="removePictures()">
           </app-sidenav-remove-files-element>
-          <a mat-list-item [href]="labelJsonUri$ | async" [download]="downloadName$ | async">
-          <mat-icon mat-list-icon>file_download</mat-icon>
-            <p mat-line>Download</p>
-          </a>
+          <app-sidenav-download-element
+            [labelJsonUri]="labelJsonUri$ | async"
+            [downloadName]="downloadName$ | async">
+          </app-sidenav-download-element>
           <mat-divider></mat-divider>
           <app-sidenav-picture-list
             [pictures]="pictures$ | async"
@@ -56,17 +53,6 @@ export class SidenavComponent implements OnInit {
   labelJsonUri$: Observable<any>;
   downloadName$: Observable<string>;
 
-  sidenavElements: SidenavElement[] = [
-    {
-      name: 'Upload Pictures',
-      icon: 'image'
-    },
-    {
-      name: 'Remove Pictures',
-      icon: 'delete'
-    }
-  ];
-
   constructor(
     private sanitizer: DomSanitizer,
     private store: Store<fromStore.State>,
@@ -85,37 +71,12 @@ export class SidenavComponent implements OnInit {
   ngOnInit() {
   }
 
-  onUploadPictures(event) {
+  uploadPictures(event) {
     // Store devtools cannot serialize event.target.files and thus we must
     // handle async operation here.
-
     this.store.dispatch(new fromStore.LoadPictures());
 
-    const upload: Promise<{ data: string, picture: Picture }>[] =
-      Array.from(event.target.files).map((file: any) => {
-        const reader = new FileReader();
-        return new Promise((resolve, reject) => {
-          reader.onload = (e: any) => {
-            const image = new Image();
-            image.src = e.target.result;
-            image.onload = () =>
-              resolve({
-                data: e.target.result,
-                picture: {
-                  file: file.name,
-                  width: image.width,
-                  height: image.height,
-                  labels: [],
-                  boxes: []
-                }
-              });
-          }
-          reader.onerror = (err) => reject(err);
-          reader.readAsDataURL(file);
-        });
-      });
-
-    Promise.all(upload)
+    this.picturesService.uploadPictures(event.target.files)
       .then((pictures) => {
           this.picturesService.setPictureData(pictures.map(p => p.data));
           this.store.dispatch(new fromStore.LoadPicturesSuccess(pictures.map(p => p.picture)));
@@ -125,8 +86,8 @@ export class SidenavComponent implements OnInit {
       );
   }
 
-  onRemovePictures() {
-    return;
+  removePictures() {
+    console.log('Remove Pictures!');
   }
 
   private toJsonUri(o: Object) {
