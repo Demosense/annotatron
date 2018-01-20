@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {SidenavElement} from '@app/models/sidenav-element';
+import { DomSanitizer } from '@angular/platform-browser';
 
+import {Observable} from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import * as fromStore from '../store';
-import { Picture} from '@app/models';
 import * as fromRoot from '@app/store';
-import {Observable} from 'rxjs/Observable';
+import { Picture} from '@app/models';
 import { PicturesService } from '@app/services';
+import { SidenavElement } from '@app/models/sidenav-element';
 
 @Component({
   selector: 'app-sidenav',
@@ -23,6 +25,10 @@ import { PicturesService } from '@app/services';
             [sidenavElement]="sidenavElements[1]"
             (remove)="onRemovePictures()">
           </app-sidenav-remove-files-element>
+          <a mat-list-item [href]="labelJsonUri$ | async" [download]="downloadName$ | async">
+          <mat-icon mat-list-icon>file_download</mat-icon>
+            <p mat-line>Download</p>
+          </a>
           <mat-divider></mat-divider>
           <app-sidenav-picture-list
             [pictures]="pictures$ | async"
@@ -47,6 +53,8 @@ export class SidenavComponent implements OnInit {
 
   pictures$: Observable<Picture[]>;
   picturesData$: Observable<string[]>;
+  labelJsonUri$: Observable<any>;
+  downloadName$: Observable<string>;
 
   sidenavElements: SidenavElement[] = [
     {
@@ -60,11 +68,18 @@ export class SidenavComponent implements OnInit {
   ];
 
   constructor(
+    private sanitizer: DomSanitizer,
     private store: Store<fromStore.State>,
     private picturesService: PicturesService,
   ) {
     this.pictures$ = this.store.select(fromRoot.getAllPictures);
     this.picturesData$ = this.picturesService.getPictureData();
+    this.labelJsonUri$ = this.store.select(fromRoot.getLabelledPictures).pipe(
+      map(labelledPictures => this.toJsonUri(labelledPictures)),
+    );
+    this.downloadName$ = this.labelJsonUri$.pipe(
+      map(() => `${Date.now()}.json`),
+    );
   }
 
   ngOnInit() {
@@ -113,4 +128,12 @@ export class SidenavComponent implements OnInit {
   onRemovePictures() {
     return;
   }
+
+  private toJsonUri(o: Object) {
+    const HEADER = 'data:text/json;charset=UTF-8,';
+    const s = JSON.stringify(o);
+    const uri = encodeURIComponent(s);
+    return this.sanitizer.bypassSecurityTrustUrl(`${HEADER}${uri}`);
+  }
+
 }
