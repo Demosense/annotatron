@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { map, withLatestFrom } from 'rxjs/operators';
+import { first, map, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import {Box, Label, Picture} from '@app/models';
@@ -19,10 +19,10 @@ import { PicturesService } from '@app/services';
           <mat-card-title>{{ (picture$ | async)?.file | slice:0:20 }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <app-picture 
+          <app-picture
             [picture]="picture$ | async"
-            [pictureData]="pictureData$ | async"
-          ></app-picture>
+            [pictureData]="pictureData$ | async">
+          </app-picture>
         </mat-card-content>
         <mat-card-actions fxLayoutAlign="center center">
           <app-picture-button [icon]="'keyboard_arrow_left'"></app-picture-button>
@@ -50,6 +50,7 @@ import { PicturesService } from '@app/services';
           <mat-card-content>
             <app-label-list
               [labels]="labels$ | async"
+              [labelValues]="(picture$ | async)?.labels"
               (updates)="updateLabel($event)">
             </app-label-list>
           </mat-card-content>
@@ -84,9 +85,12 @@ export class MainComponent implements OnInit {
   }
 
   private updateLabel(labelValue: LabelValue) {
-    // TODO: stub replace with actual picture id
-    const pictureId = 0;
-    this.store.dispatch(new fromRoot.UpdateLabel({ pictureId, labelValue }));
+    this.picture$.pipe(
+      first(),
+    ).subscribe(
+      picture => this.store.dispatch(
+        new fromRoot.UpdateLabel({ pictureId: picture.id, labelValue }))
+    );
   }
 
   private selectBox(event: number) {

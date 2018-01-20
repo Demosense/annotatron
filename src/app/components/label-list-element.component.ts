@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { Label } from '@app/models';
+import { Label, LabelValue } from '@app/models';
 
 @Component({
   selector: 'app-label-list-element',
@@ -12,7 +12,9 @@ import { Label } from '@app/models';
       <div [ngSwitch]="label.type">
 
         <div *ngSwitchCase="LABEL_CATEGORY">
-          <mat-radio-group (change)="changeValue.emit($event.value)" >
+          <mat-radio-group
+            (change)="changeValue.emit($event.value)"
+            [value]="labelValue?.value || ''">
             <mat-radio-button
               *ngFor="let cat of label.range"
               [value]="cat">{{cat}}
@@ -26,7 +28,8 @@ import { Label } from '@app/models';
                       [min]="label.range[0]"
                       [max]="label.range[1]"
                       [step]="label.range[3] || 1"
-                      [thumbLabel]="true">
+                      [thumbLabel]="true"
+                      [value]="labelValue?.value || label.range[0]">
           </mat-slider>
         </div>
 
@@ -43,6 +46,7 @@ export class LabelListElementComponent implements OnInit {
   readonly LABEL_RANGE = 'range';
 
   @Input() label: Label;
+  @Input() labelValue: LabelValue;
   @Output() changeValue = new EventEmitter<string>();
 
   constructor() {}

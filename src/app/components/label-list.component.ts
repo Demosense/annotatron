@@ -9,6 +9,7 @@ import { Label, LabelValue } from '@app/models';
       <app-label-list-element
         *ngFor="let label of labels"
         [label]="label"
+        [labelValue]="labelValues ? labelValues[label.id] : null" 
         (changeValue)="updateLabel(label.id, $event)">
       </app-label-list-element>
     </mat-list>
@@ -18,6 +19,7 @@ import { Label, LabelValue } from '@app/models';
 export class LabelListComponent implements OnInit {
 
   @Input() labels: Label[];
+  @Input() labelValues: LabelValue[];
   @Output() updates = new EventEmitter<LabelValue>();
 
   constructor() { }

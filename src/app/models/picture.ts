@@ -1,7 +1,7 @@
 import { BoxValue, LabelValue } from '@app/models';
 
 export interface Picture {
-  id?: string;
+  id?: number;
   file: string;
   width: number;
   height: number;
