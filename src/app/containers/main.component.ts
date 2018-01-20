@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { first, map, withLatestFrom } from 'rxjs/operators';
+import { first, map, withLatestFrom, combineLatest } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import {Box, Label, Picture} from '@app/models';
@@ -76,7 +76,7 @@ export class MainComponent implements OnInit {
     this.labels$ = this.store.select(fromRoot.getAllLabels);
     this.picture$ = this.store.select(fromRoot.getSelectedPicture);
     this.pictureData$ = this.picturesService.getPictureData().pipe(
-      withLatestFrom(this.picture$),
+      combineLatest(this.picture$),
       map(([data, picture]) => picture ? data[picture.id] : ''),
     );
   }
