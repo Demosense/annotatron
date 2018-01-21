@@ -19,3 +19,8 @@ export const getBoxesLoaded = createSelector(
   fromBoxes.getBoxesLoaded
 );
 
+export const getSelectedBox = createSelector(
+  getBoxesState,
+  fromBoxes.getSelectedBox
+);
+

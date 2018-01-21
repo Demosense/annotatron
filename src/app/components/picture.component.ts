@@ -1,11 +1,15 @@
 import {
   Component,
   ElementRef,
-  Input, OnChanges,
-  OnInit, SimpleChanges,
+  EventEmitter,
+  Input,
+  Output,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
-import {Picture} from '@app/models';
+import {BoxValue, Picture} from '@app/models';
 
 @Component({
   selector: 'app-picture',
@@ -22,16 +26,18 @@ export class PictureComponent implements OnInit, OnChanges {
 
   @Input() picture: Picture;
   @Input() pictureData: string;
+  @Input() boxes: BoxValue[];
+  @Output() boxDrawn = new EventEmitter<any>();
 
   @ViewChild('layout') canvas: ElementRef;
   public context;
   public data;
   public startX: number = null;
   public startY: number = null;
-  public firstClickX: number = null;
-  public firstClickY: number = null;
-  public secondClickX: number = null;
-  public secondClickY: number = null;
+  public x1: number = null;
+  public y1: number = null;
+  public x2: number = null;
+  public y2: number = null;
   public drag = false;
 
   ngOnInit() {
@@ -55,8 +61,8 @@ export class PictureComponent implements OnInit, OnChanges {
   public mdEvent(e) {
     this.startX = e.clientX;
     this.startY = e.clientY;
-    this.firstClickX = e.layerX;
-    this.firstClickY = e.layerY;
+    this.x1 = e.layerX;
+    this.y1 = e.layerY;
     this.drag = true;
   }
 
@@ -68,8 +74,9 @@ export class PictureComponent implements OnInit, OnChanges {
     this.canvas.nativeElement.getContext('2d').setLineDash([6]);
     this.canvas.nativeElement.getContext('2d').strokeRect(x, y, w, h);
     this.drag = false;
-    this.secondClickX = e.layerX;
-    this.secondClickY = e.layerY;
+    this.x2 = e.layerX;
+    this.y2 = e.layerY;
+    this.boxDrawn.emit({ x1: this.x1, y1: this.y1, x2: this.x2, y2: this.y2 });
   }
 
   public mmEvent(e) {

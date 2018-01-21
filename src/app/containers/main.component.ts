@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { first, map, withLatestFrom, combineLatest } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import {Box, Label, Picture} from '@app/models';
+import {Box, BoxValue, Label, Picture} from '@app/models';
 import * as fromRoot from '@app/store';
 
 import { LabelValue } from '@app/models/label';
@@ -21,7 +21,9 @@ import { PicturesService } from '@app/services';
         <mat-card-content>
           <app-picture
             [picture]="picture$ | async"
-            [pictureData]="pictureData$ | async">
+            [pictureData]="pictureData$ | async"
+            [boxes]="boxes"
+            (boxDrawn)="boxDrawn($event)">
           </app-picture>
         </mat-card-content>
         <mat-card-actions fxLayoutAlign="center center">
@@ -67,6 +69,8 @@ export class MainComponent implements OnInit {
   labels$: Observable<Label[]>;
   picture$: Observable<Picture>;
   pictureData$: Observable<string>;
+  selectedBox$: Observable<number>;
+  boxes: BoxValue[] = [];
 
   constructor(
     private store: Store<fromRoot.State>,
@@ -75,6 +79,7 @@ export class MainComponent implements OnInit {
     this.boxes$ = this.store.select(fromRoot.getAllBoxes);
     this.labels$ = this.store.select(fromRoot.getAllLabels);
     this.picture$ = this.store.select(fromRoot.getSelectedPicture);
+    this.selectedBox$ = this.store.select(fromRoot.getSelectedBox);
     this.pictureData$ = this.picturesService.getPictureData().pipe(
       combineLatest(this.picture$),
       map(([data, picture]) => picture ? data[picture.id] : ''),
@@ -95,6 +100,23 @@ export class MainComponent implements OnInit {
 
   private selectBox(event: number) {
     console.log(event);
+    this.store.dispatch(new fromRoot.SelectedBox(event));
+  }
+
+  private boxDrawn(box: { x0: number, y0: number, x1: number, y1: number }) {
+    console.log(box);
+
+    this.picture$.pipe(
+      first(),
+    ).subscribe(
+      picture => this.selectedBox$.pipe(
+          first(),
+        ).subscribe(
+          boxId => this.store.dispatch(
+            new fromRoot.UpdateBox( { pictureId: picture.id, boxValue: { id: boxId, points: box } })
+          )
+        )
+    );
   }
 }
 
