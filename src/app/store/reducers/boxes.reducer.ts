@@ -4,13 +4,13 @@ import { Box } from '@app/models';
 export interface BoxState {
   entities: { [id: number]: Box };
   loaded: boolean;
-  selectedId: number;
+  selectedBox: Box;
 }
 
 const initialState: BoxState = {
   entities: {},
   loaded: false,
-  selectedId: null,
+  selectedBox: null,
 };
 
 export function reducer(
@@ -44,10 +44,10 @@ export function reducer(
     }
 
     case fromBoxes.BoxesActionTypes.SelectedBox: {
-      const selectedId = action.payload;
+      const selectedBox = action.payload;
       return {
         ...state,
-        selectedId
+        selectedBox
       };
     }
   }
@@ -56,5 +56,5 @@ export function reducer(
 
 export const getBoxesEntities = (state: BoxState) => state.entities;
 export const getBoxesLoaded = (state: BoxState) => state.loaded;
-export const getSelectedBox = (state: BoxState) => state.selectedId;
+export const getSelectedBox = (state: BoxState) => state.selectedBox;
 

@@ -19,7 +19,7 @@ export class RemoveBoxes implements Action {
 
 export class SelectedBox implements Action {
   readonly type = BoxesActionTypes.SelectedBox;
-  constructor(public payload: number) {}
+  constructor(public payload: Box) {}
 }
 
 export type BoxesActions =

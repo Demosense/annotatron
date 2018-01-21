@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { first, map, withLatestFrom, combineLatest } from 'rxjs/operators';
+import { first, map, combineLatest } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import {Box, BoxValue, Label, Picture} from '@app/models';
+import {Box, Label, Picture} from '@app/models';
 import * as fromRoot from '@app/store';
 
 import { LabelValue } from '@app/models/label';
@@ -24,6 +24,7 @@ import { PicturesService } from '@app/services';
             [pictureData]="pictureData$ | async"
             [boxes]="(picture$ | async)?.boxes"
             [selectedBox]="selectedBox$ | async"
+            [boxesEntities]="boxEntities$ | async"
             (boxDrawn)="boxDrawn($event)">
           </app-picture>
         </mat-card-content>
@@ -66,10 +67,11 @@ import { PicturesService } from '@app/services';
 export class MainComponent implements OnInit {
 
   boxes$: Observable<Box[]>;
+  boxEntities$: Observable<{ [id: number]: Box }>;
   labels$: Observable<Label[]>;
   picture$: Observable<Picture>;
   pictureData$: Observable<string>;
-  selectedBox$: Observable<number>;
+  selectedBox$: Observable<Box>;
 
   constructor(
     private store: Store<fromRoot.State>,
@@ -77,6 +79,7 @@ export class MainComponent implements OnInit {
   ) {
     this.boxes$ = this.store.select(fromRoot.getAllBoxes);
     this.labels$ = this.store.select(fromRoot.getAllLabels);
+    this.boxEntities$ = this.store.select(fromRoot.getBoxesEntities);
     this.picture$ = this.store.select(fromRoot.getSelectedPicture);
     this.selectedBox$ = this.store.select(fromRoot.getSelectedBox);
     this.pictureData$ = this.picturesService.getPictureData().pipe(
@@ -97,7 +100,7 @@ export class MainComponent implements OnInit {
     );
   }
 
-  private selectBox(event: number) {
+  private selectBox(event: Box) {
     this.store.dispatch(new fromRoot.SelectedBox(event));
   }
 
@@ -108,8 +111,8 @@ export class MainComponent implements OnInit {
       picture => this.selectedBox$.pipe(
           first(),
         ).subscribe(
-          boxId => this.store.dispatch(
-            new fromRoot.UpdateBox( { pictureId: picture.id, boxValue: { id: boxId, points: box } })
+          selectedBox => this.store.dispatch(
+            new fromRoot.UpdateBox( { pictureId: picture.id, boxValue: { id: selectedBox.id, points: box } })
           )
         )
     );

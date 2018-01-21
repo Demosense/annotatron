@@ -9,7 +9,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import {BoxValue, Picture} from '@app/models';
+import {Box, BoxValue, Picture} from '@app/models';
 
 @Component({
   selector: 'app-picture',
@@ -27,7 +27,8 @@ export class PictureComponent implements OnInit, OnChanges {
   @Input() picture: Picture;
   @Input() pictureData: string;
   @Input() boxes: BoxValue[];
-  @Input() selectedBox: number;
+  @Input() selectedBox: Box;
+  @Input() boxesEntities: { id: number; box: Box};
   @Output() boxDrawn = new EventEmitter<any>();
   @ViewChild('layout') canvas: ElementRef;
 
@@ -51,6 +52,7 @@ export class PictureComponent implements OnInit, OnChanges {
       this.canvas.nativeElement.getContext('2d').drawImage(source, 0, 0);
       this.canvas.nativeElement.getContext('2d').setLineDash([6]);
       for (const key in this.boxes) {
+        this.canvas.nativeElement.getContext('2d').strokeStyle = this.boxesEntities[this.boxes[key].id].color;
         this.canvas.nativeElement.getContext('2d').strokeRect(
           this.boxes[key].points.x0,
           this.boxes[key].points.y0,
@@ -77,6 +79,7 @@ export class PictureComponent implements OnInit, OnChanges {
       const w = e.layerX - x;
       const h = e.layerY - y;
       this.canvas.nativeElement.getContext('2d').setLineDash([6]);
+      this.canvas.nativeElement.getContext('2d').strokeStyle = this.selectedBox.color;
       this.canvas.nativeElement.getContext('2d').strokeRect(x, y, w, h);
       this.drawBoxes();
       this.drag = false;
@@ -92,6 +95,7 @@ export class PictureComponent implements OnInit, OnChanges {
       this.canvas.nativeElement.getContext('2d').canvas.width = source.width;
       this.canvas.nativeElement.getContext('2d').drawImage(source, 0, 0);
       this.canvas.nativeElement.getContext('2d').setLineDash([6]);
+      this.canvas.nativeElement.getContext('2d').strokeStyle = this.selectedBox.color;
       this.canvas.nativeElement.getContext('2d').strokeRect(
         this.startX,
         this.startY,
@@ -104,7 +108,9 @@ export class PictureComponent implements OnInit, OnChanges {
 
   public drawBoxes() {
     for (const key in this.boxes) {
-      if (this.boxes[key].id !== this.selectedBox) {
+      if (this.boxes[key].id !== this.selectedBox.id) {
+        this.canvas.nativeElement.getContext('2d').strokeStyle = 'red';
+        this.canvas.nativeElement.getContext('2d').strokeStyle = this.boxesEntities[this.boxes[key].id].color;
         this.canvas.nativeElement.getContext('2d').strokeRect(
           this.boxes[key].points.x0,
           this.boxes[key].points.y0,
