@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { first, map, withLatestFrom, combineLatest } from 'rxjs/operators';
+import { first, map, combineLatest } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import {Box, Label, Picture} from '@app/models';
@@ -21,7 +21,11 @@ import { PicturesService } from '@app/services';
         <mat-card-content>
           <app-picture
             [picture]="picture$ | async"
-            [pictureData]="pictureData$ | async">
+            [pictureData]="pictureData$ | async"
+            [boxes]="(picture$ | async)?.boxes"
+            [selectedBox]="selectedBox$ | async"
+            [boxesEntities]="boxEntities$ | async"
+            (boxDrawn)="boxDrawn($event)">
           </app-picture>
         </mat-card-content>
         <mat-card-actions fxLayoutAlign="center center">
@@ -56,7 +60,6 @@ import { PicturesService } from '@app/services';
           </mat-card-content>
         </mat-card>
       </div>
-
     </div>
   `,
   styles: []
@@ -64,9 +67,11 @@ import { PicturesService } from '@app/services';
 export class MainComponent implements OnInit {
 
   boxes$: Observable<Box[]>;
+  boxEntities$: Observable<{ [id: number]: Box }>;
   labels$: Observable<Label[]>;
   picture$: Observable<Picture>;
   pictureData$: Observable<string>;
+  selectedBox$: Observable<Box>;
 
   constructor(
     private store: Store<fromRoot.State>,
@@ -74,7 +79,9 @@ export class MainComponent implements OnInit {
   ) {
     this.boxes$ = this.store.select(fromRoot.getAllBoxes);
     this.labels$ = this.store.select(fromRoot.getAllLabels);
+    this.boxEntities$ = this.store.select(fromRoot.getBoxesEntities);
     this.picture$ = this.store.select(fromRoot.getSelectedPicture);
+    this.selectedBox$ = this.store.select(fromRoot.getSelectedBox);
     this.pictureData$ = this.picturesService.getPictureData().pipe(
       combineLatest(this.picture$),
       map(([data, picture]) => picture ? data[picture.id] : ''),
@@ -93,8 +100,22 @@ export class MainComponent implements OnInit {
     );
   }
 
-  private selectBox(event: number) {
-    console.log(event);
+  private selectBox(event: Box) {
+    this.store.dispatch(new fromRoot.SelectedBox(event));
+  }
+
+  private boxDrawn(box: { x0: number, y0: number, x1: number, y1: number }) {
+    this.picture$.pipe(
+      first(),
+    ).subscribe(
+      picture => this.selectedBox$.pipe(
+          first(),
+        ).subscribe(
+          selectedBox => this.store.dispatch(
+            new fromRoot.UpdateBox( { pictureId: picture.id, boxValue: { id: selectedBox.id, points: box } })
+          )
+        )
+    );
   }
 }
 

@@ -1,11 +1,15 @@
 import {
   Component,
   ElementRef,
-  Input, OnChanges,
-  OnInit, SimpleChanges,
+  EventEmitter,
+  Input,
+  Output,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
-import {Picture} from '@app/models';
+import {Box, BoxValue, Picture} from '@app/models';
 
 @Component({
   selector: 'app-picture',
@@ -22,76 +26,98 @@ export class PictureComponent implements OnInit, OnChanges {
 
   @Input() picture: Picture;
   @Input() pictureData: string;
-
+  @Input() boxes: BoxValue[];
+  @Input() selectedBox: Box;
+  @Input() boxesEntities: { id: number; box: Box};
+  @Output() boxDrawn = new EventEmitter<any>();
   @ViewChild('layout') canvas: ElementRef;
-  public context;
+
+  public pictureId: number = null;
   public data;
   public startX: number = null;
   public startY: number = null;
-  public firstClickX: number = null;
-  public firstClickY: number = null;
-  public secondClickX: number = null;
-  public secondClickY: number = null;
   public drag = false;
 
-  ngOnInit() {
-    this.context = this.canvas.nativeElement.getContext('2d');
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.picture) {
+    if ((this.picture) && (this.picture.id !== this.pictureId)) {
+      this.pictureId = this.picture.id;
       const source = new Image();
       source.crossOrigin = 'Anonymous';
-      source.onload = () => {
-        this.canvas.nativeElement.height = this.picture.height;
-        this.canvas.nativeElement.width = this.picture.width;
-        this.context.drawImage(source, 0, 0);
-      };
       source.src = this.pictureData;
       this.data = this.pictureData;
+      this.canvas.nativeElement.height = this.picture.height;
+      this.canvas.nativeElement.width = this.picture.width;
+      this.canvas.nativeElement.getContext('2d').drawImage(source, 0, 0);
+      this.canvas.nativeElement.getContext('2d').setLineDash([6]);
+      for (const key in this.boxes) {
+        this.canvas.nativeElement.getContext('2d').strokeStyle = this.boxesEntities[this.boxes[key].id].color;
+        this.canvas.nativeElement.getContext('2d').strokeRect(
+          this.boxes[key].points.x0,
+          this.boxes[key].points.y0,
+          this.boxes[key].points.x1 - this.boxes[key].points.x0,
+          this.boxes[key].points.y1 - this.boxes[key].points.y0
+        );
+      }
     }
   }
 
   public mdEvent(e) {
-    this.startX = e.clientX;
-    this.startY = e.clientY;
-    this.firstClickX = e.layerX;
-    this.firstClickY = e.layerY;
-    this.drag = true;
+    if (this.selectedBox) {
+      this.startX = e.layerX;
+      this.startY = e.layerY;
+      this.drag = true;
+      this.drawBoxes();
+    }
   }
 
   public muEvent(e) {
-    const x = this.startX - this.canvas.nativeElement.getBoundingClientRect().left;
-    const y = this.startY - this.canvas.nativeElement.getBoundingClientRect().top;
-    const w = e.clientX - this.canvas.nativeElement.getBoundingClientRect().left - x;
-    const h = e.clientY - this.canvas.nativeElement.getBoundingClientRect().top - y;
-    this.canvas.nativeElement.getContext('2d').setLineDash([6]);
-    this.canvas.nativeElement.getContext('2d').strokeRect(x, y, w, h);
-    this.drag = false;
-    this.secondClickX = e.layerX;
-    this.secondClickY = e.layerY;
+    if (this.selectedBox) {
+      const x = this.startX;
+      const y = this.startY;
+      const w = e.layerX - x;
+      const h = e.layerY - y;
+      this.canvas.nativeElement.getContext('2d').setLineDash([6]);
+      this.canvas.nativeElement.getContext('2d').strokeStyle = this.selectedBox.color;
+      this.canvas.nativeElement.getContext('2d').strokeRect(x, y, w, h);
+      this.drawBoxes();
+      this.drag = false;
+      this.boxDrawn.emit({x0: this.startX, y0: this.startY, x1: e.layerX, y1: e.layerY});
+    }
   }
 
   public mmEvent(e) {
     if (this.drag) {
       const source = new Image();
       source.src = this.data;
-      const context: CanvasRenderingContext2D = this.canvas.nativeElement.getContext('2d');
-      const sx = this.startX;
-      const sy = this.startY;
-      const canvasTop = this.canvas.nativeElement.getBoundingClientRect().top;
-      const canvasLeft = this.canvas.nativeElement.getBoundingClientRect().left;
-      source.onload = function () {
-        context.canvas.height = source.height;
-        context.canvas.width = source.width;
-        context.drawImage(source, 0, 0);
-        const x = sx - canvasLeft;
-        const y = sy - canvasTop;
-        const w = e.clientX - canvasLeft - x;
-        const h = e.clientY - canvasTop - y;
-        context.setLineDash([6]);
-        context.strokeRect(x, y, w, h);
-      };
+      this.canvas.nativeElement.getContext('2d').canvas.height = source.height;
+      this.canvas.nativeElement.getContext('2d').canvas.width = source.width;
+      this.canvas.nativeElement.getContext('2d').drawImage(source, 0, 0);
+      this.canvas.nativeElement.getContext('2d').setLineDash([6]);
+      this.canvas.nativeElement.getContext('2d').strokeStyle = this.selectedBox.color;
+      this.canvas.nativeElement.getContext('2d').strokeRect(
+        this.startX,
+        this.startY,
+        e.layerX - this.startX,
+        e.layerY - this.startY
+      );
+      this.drawBoxes();
+    }
+  }
+
+  public drawBoxes() {
+    for (const key in this.boxes) {
+      if (this.boxes[key].id !== this.selectedBox.id) {
+        this.canvas.nativeElement.getContext('2d').strokeStyle = 'red';
+        this.canvas.nativeElement.getContext('2d').strokeStyle = this.boxesEntities[this.boxes[key].id].color;
+        this.canvas.nativeElement.getContext('2d').strokeRect(
+          this.boxes[key].points.x0,
+          this.boxes[key].points.y0,
+          this.boxes[key].points.x1 - this.boxes[key].points.x0,
+          this.boxes[key].points.y1 - this.boxes[key].points.y0
+        );
+      }
     }
   }
 }

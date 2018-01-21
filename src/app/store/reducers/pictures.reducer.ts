@@ -82,6 +82,33 @@ export function reducer(
         entities: modEntities,
       };
     }
+
+    case fromPictures.PicturesActionTypes.UpdateBox: {
+      // Get current state slices
+      const { pictureId, boxValue } = action.payload;
+      const { entities } = state;
+      const picture = entities[pictureId];
+
+      // Check existence
+      if (!picture) {
+        return state;
+      }
+
+      const modEntities = {
+        ...entities,
+        [pictureId]: {
+          ...picture,
+          boxes: {
+            ...picture.boxes,
+            [boxValue.id]: boxValue,
+          },
+        },
+      };
+      return {
+        ...state,
+        entities: modEntities,
+      };
+    }
   }
 
   return state;
