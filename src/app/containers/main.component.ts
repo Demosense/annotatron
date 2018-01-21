@@ -22,7 +22,8 @@ import { PicturesService } from '@app/services';
           <app-picture
             [picture]="picture$ | async"
             [pictureData]="pictureData$ | async"
-            [boxes]="boxes"
+            [boxes]="(picture$ | async)?.boxes"
+            [selectedBox]="selectedBox$ | async"
             (boxDrawn)="boxDrawn($event)">
           </app-picture>
         </mat-card-content>
@@ -58,7 +59,6 @@ import { PicturesService } from '@app/services';
           </mat-card-content>
         </mat-card>
       </div>
-
     </div>
   `,
   styles: []
@@ -70,7 +70,6 @@ export class MainComponent implements OnInit {
   picture$: Observable<Picture>;
   pictureData$: Observable<string>;
   selectedBox$: Observable<number>;
-  boxes: BoxValue[] = [];
 
   constructor(
     private store: Store<fromRoot.State>,
@@ -99,13 +98,10 @@ export class MainComponent implements OnInit {
   }
 
   private selectBox(event: number) {
-    console.log(event);
     this.store.dispatch(new fromRoot.SelectedBox(event));
   }
 
   private boxDrawn(box: { x0: number, y0: number, x1: number, y1: number }) {
-    console.log(box);
-
     this.picture$.pipe(
       first(),
     ).subscribe(

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-picture-button',
@@ -17,5 +17,4 @@ export class PictureButtonComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }
