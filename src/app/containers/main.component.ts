@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { first, map, combineLatest } from 'rxjs/operators';
+import { first, map, combineLatest, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import {Box, Label, Picture} from '@app/models';
@@ -106,15 +106,13 @@ export class MainComponent implements OnInit {
 
   private boxDrawn(box: { x0: number, y0: number, x1: number, y1: number }) {
     this.picture$.pipe(
+      withLatestFrom(this.selectedBox$),
       first(),
     ).subscribe(
-      picture => this.selectedBox$.pipe(
-          first(),
-        ).subscribe(
-          selectedBox => this.store.dispatch(
+      ([picture, selectedBox]) =>
+          this.store.dispatch(
             new fromRoot.UpdateBox( { pictureId: picture.id, boxValue: { id: selectedBox.id, points: box } })
           )
-        )
     );
   }
 }
