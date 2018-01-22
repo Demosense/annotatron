@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+<<<<<<< HEAD
 import {first, map, combineLatest, withLatestFrom} from 'rxjs/operators';
+=======
+import { first, map, combineLatest, withLatestFrom } from 'rxjs/operators';
+>>>>>>> ab2655d336433f54a763b1c4a041e3b65bb64025
 import { Store } from '@ngrx/store';
 
 import {Box, Label, Picture} from '@app/models';
@@ -108,15 +112,13 @@ export class MainComponent implements OnInit {
 
   private boxDrawn(box: { x0: number, y0: number, x1: number, y1: number }) {
     this.picture$.pipe(
+      withLatestFrom(this.selectedBox$),
       first(),
     ).subscribe(
-      picture => this.selectedBox$.pipe(
-          first(),
-        ).subscribe(
-          selectedBox => this.store.dispatch(
+      ([picture, selectedBox]) =>
+          this.store.dispatch(
             new fromRoot.UpdateBox( { pictureId: picture.id, boxValue: { id: selectedBox.id, points: box } })
           )
-        )
     );
   }
 
