@@ -29,8 +29,8 @@ import { PicturesService } from '@app/services';
           </app-picture>
         </mat-card-content>
         <mat-card-actions fxLayoutAlign="center center">
-          <app-picture-button [icon]="'keyboard_arrow_left'"></app-picture-button>
-          <app-picture-button [icon]="'keyboard_arrow_right'"></app-picture-button>
+          <app-picture-button [icon]="'keyboard_arrow_left'" (changePicture)="previousPicture()"></app-picture-button>
+          <app-picture-button [icon]="'keyboard_arrow_right'"  (changePicture)="nextPicture()"></app-picture-button>
         </mat-card-actions>
       </mat-card>
 
@@ -70,6 +70,7 @@ export class MainComponent implements OnInit {
   boxEntities$: Observable<{ [id: number]: Box }>;
   labels$: Observable<Label[]>;
   picture$: Observable<Picture>;
+  pictures$: Observable<Picture[]>;
   pictureData$: Observable<string>;
   selectedBox$: Observable<Box>;
 
@@ -81,6 +82,7 @@ export class MainComponent implements OnInit {
     this.labels$ = this.store.select(fromRoot.getAllLabels);
     this.boxEntities$ = this.store.select(fromRoot.getBoxesEntities);
     this.picture$ = this.store.select(fromRoot.getSelectedPicture);
+    this.pictures$ = this.store.select(fromRoot.getAllPictures);
     this.selectedBox$ = this.store.select(fromRoot.getSelectedBox);
     this.pictureData$ = this.picturesService.getPictureData().pipe(
       combineLatest(this.picture$),
@@ -116,6 +118,27 @@ export class MainComponent implements OnInit {
               boxValue: { id: selectedBox.id, x0, y0, x1, y1 },
             })
           )
+    );
+  }
+
+  private previousPicture() {
+    this.pictures$.pipe(
+      withLatestFrom(this.picture$),
+      first(),
+    ).subscribe(
+      ([pictures, picture]) => this.store.dispatch(
+        new fromRoot.Go({ path: ['/', (picture.id == 0 ? pictures.length - 1 : picture.id - 1)] })
+      )
+    );
+  }
+
+  private nextPicture() {
+    this.pictures$.pipe(
+      withLatestFrom(this.picture$),
+      first(),
+    ).subscribe(
+      ([pictures, picture]) => this.store.dispatch(
+          new fromRoot.Go({path: ['/', ((picture.id + 1) % pictures.length)]}))
     );
   }
 }
