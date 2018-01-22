@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-<<<<<<< HEAD
-import {first, map, combineLatest, withLatestFrom} from 'rxjs/operators';
-=======
 import { first, map, combineLatest, withLatestFrom } from 'rxjs/operators';
->>>>>>> ab2655d336433f54a763b1c4a041e3b65bb64025
 import { Store } from '@ngrx/store';
 
 import {Box, Label, Picture} from '@app/models';
