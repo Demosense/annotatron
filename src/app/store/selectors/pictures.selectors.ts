@@ -19,7 +19,7 @@ export const getSelectedPicture = createSelector(
   getPicturesEntities,
   fromRouter.getRouterState,
   (entities, router): Picture => {
-    return router.state && entities[router.state.params.pictureId];
+    return router.state && entities[router.state.params.currentPictureId];
   }
 );
 
@@ -44,7 +44,7 @@ export const getLabelledPictures = createSelector(
           'boxes':
             Object.keys(boxes).map( key => {
               const { name } = allBoxes[key];
-              const { points: { x0, y0, x1, y1 } } = boxes[key];
+              const { x0, y0, x1, y1 } = boxes[key];
               return ({ name, value: { x0, y0, x1, y1 } });
             }).reduce((acc, { name, value }) => ({ ...acc, [name]: value }), {}),
         })

@@ -104,14 +104,17 @@ export class MainComponent implements OnInit {
     this.store.dispatch(new fromRoot.SelectedBox(event));
   }
 
-  private boxDrawn(box: { x0: number, y0: number, x1: number, y1: number }) {
+  private boxDrawn({ x0, y0, x1, y1 }) {
     this.picture$.pipe(
       withLatestFrom(this.selectedBox$),
       first(),
     ).subscribe(
       ([picture, selectedBox]) =>
           this.store.dispatch(
-            new fromRoot.UpdateBox( { pictureId: picture.id, boxValue: { id: selectedBox.id, points: box } })
+            new fromRoot.UpdateBox( {
+              pictureId: picture.id,
+              boxValue: { id: selectedBox.id, x0, y0, x1, y1 },
+            })
           )
     );
   }
