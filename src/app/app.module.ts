@@ -46,7 +46,7 @@ export const routes: Routes = [
     component: ConfigureComponent,
   },
   {
-    path: ':pictureId',
+    path: ':currentPictureId',
     // canActivate: [fromGuards.PictureGuards],
     component: MainComponent,
   },
