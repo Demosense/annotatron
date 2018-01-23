@@ -4,7 +4,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
   selector: 'app-sidenav-upload-files-element',
   template: `
     <a mat-list-item (click)="selectFile()">
-      <mat-icon mat-list-icon>image</mat-icon>
+      <mat-icon mat-list-icon>add_a_photo</mat-icon>
       <p mat-line>Upload Pictures</p>
       <input type="file" (change)="uploadPictures($event)" multiple #inputFiles>
     </a>

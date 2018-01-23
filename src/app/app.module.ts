@@ -10,7 +10,7 @@ import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { SharedModule } from '@app/shared/';
-import { AppComponent } from './app.component';
+import { AppComponent } from './containers/app.component';
 import { ToolbarComponent } from './components/toolbar.component';
 import { MainComponent } from './containers/main.component';
 import { ToolbarButtonComponent } from './components/toolbar-button.component';
