@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, HostListener} from '@angular/core';
 
 import { Store } from '@ngrx/store';
 
 import * as fromRoot from '@app/store';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-root',
@@ -18,9 +19,15 @@ import * as fromRoot from '@app/store';
 })
 export class AppComponent {
 
+  // @HostListener allows us to also guard against browser refresh, close, etc.
+  @HostListener('window:beforeunload')
+  canDeactivate(): Observable<boolean> | boolean {
+    return false;
+  }
+
   constructor(
     private store: Store<fromRoot.State>,
-  ){}
+  ) {}
 
   private navigateHome() {
    this.store.dispatch(new fromRoot.Go({ path: [''] }));
