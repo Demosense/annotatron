@@ -1,6 +1,5 @@
-import * as fromPictures from '../actions';
+import * as fromPictures from '../actions/pictures.actions';
 import { Picture } from '@app/models';
-import {BoxState} from '@app/store/reducers/boxes.reducer';
 
 export interface PictureState {
   entities: { [id: number]: Picture };
