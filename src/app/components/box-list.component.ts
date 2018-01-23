@@ -9,7 +9,9 @@ import { Box } from '@app/models';
       <app-box-list-element
         *ngFor="let box of boxes"
         [box]="box"
-        (click)="select.emit(box)"></app-box-list-element>
+        [selected]="selectedBoxId == box.id"
+        (click)="select.emit(box)"
+      ></app-box-list-element>
     </mat-nav-list>
   `,
   styles: []
@@ -17,11 +19,11 @@ import { Box } from '@app/models';
 export class BoxListComponent implements OnInit {
 
   @Input() boxes: Box[];
+  @Input() selectedBoxId: number = -1;
   @Output() select = new EventEmitter<number>();
 
   constructor() { }
 
   ngOnInit() {
   }
-
 }

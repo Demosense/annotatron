@@ -42,6 +42,7 @@ import { PicturesService } from '@app/services';
           <mat-card-content>
             <app-box-list
             [boxes]="boxes$ | async"
+            [selectedBoxId]="(selectedBox$ | async)?.id"
             (select)="selectBox($event)">
             </app-box-list>
           </mat-card-content>
