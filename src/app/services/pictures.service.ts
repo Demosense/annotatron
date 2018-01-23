@@ -22,9 +22,9 @@ export class PicturesService {
 
 
   public uploadPictures(files: FileList): Promise<{ data: string, picture: Picture }[]> {
-
+    const validImageTypes = ['image/jpeg', 'image/png'];
     const uploads: Promise<{ data: string, picture: Picture }>[] =
-      Array.from(files).map((file: any) => {
+      Array.from(files).filter(file => validImageTypes.includes(file.type)).map((file: any) => {
         const reader = new FileReader();
         return new Promise((resolve, reject) => {
           reader.onload = (e: any) => {
@@ -41,7 +41,7 @@ export class PicturesService {
                   boxes: []
                 }
               });
-          }
+          };
           reader.onerror = (err) => reject(err);
           reader.readAsDataURL(file);
         });
