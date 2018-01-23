@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { Box } from '@app/models';
-import {Output} from '@angular/compiler/src/core';
 
 @Component({
   selector: 'app-box-list-element',

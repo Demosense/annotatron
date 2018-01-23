@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-sidenav-upload-files-element',
