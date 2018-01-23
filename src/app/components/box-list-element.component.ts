@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 
 import { Box } from '@app/models';
 
 @Component({
   selector: 'app-box-list-element',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-list-item [ngClass]="{'selected': selected }">
       <mat-icon mat-list-icon [ngStyle]="{ color: box.color }" >check_box_outline_blank</mat-icon>

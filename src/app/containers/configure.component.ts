@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
@@ -6,6 +6,7 @@ import * as fromRoot from '@app/store';
 
 @Component({
   selector: 'app-configure',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-card>
      <mat-card-content>

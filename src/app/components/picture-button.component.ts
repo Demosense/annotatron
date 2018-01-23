@@ -1,7 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-picture-button',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button mat-icon-button (click)="onChangePicture()">
       <mat-icon aria-label="Example icon-button with a heart icon">{{ icon }}</mat-icon>

@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 import { Box } from '@app/models';
 
 @Component({
   selector: 'app-box-list',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-nav-list>
       <app-box-list-element

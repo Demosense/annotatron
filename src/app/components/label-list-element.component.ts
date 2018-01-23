@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 import { Label, LabelValue } from '@app/models';
 
 @Component({
   selector: 'app-label-list-element',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-list-item>
       <mat-icon mat-list-icon >label</mat-icon>

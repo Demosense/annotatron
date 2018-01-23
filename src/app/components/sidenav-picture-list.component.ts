@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import { Picture } from '@app/models';
 
 @Component({
   selector: 'app-sidenav-picture-list',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-sidenav-picture-element
       *ngFor="let picture of pictures"

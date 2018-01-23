@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import {Observable} from 'rxjs/Observable';
@@ -12,6 +12,7 @@ import { PicturesService } from '@app/services';
 
 @Component({
   selector: 'app-sidenav',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-sidenav-container class="mat-elevation-z6">
       <mat-sidenav mode="side" opened="true" class="mat-elevation-z6">

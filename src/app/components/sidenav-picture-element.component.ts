@@ -1,10 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { Picture } from '@app/models';
 
 @Component({
   selector: 'app-sidenav-picture-element',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a mat-list-item [routerLink]="['/', picture.id]">
       <img matListAvatar [src]="getImage()">

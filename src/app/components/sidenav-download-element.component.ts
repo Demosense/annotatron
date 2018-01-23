@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-sidenav-download-element',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a mat-list-item [href]="labelJsonUri" [download]="downloadName">
       <mat-icon mat-list-icon>file_download</mat-icon>

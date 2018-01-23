@@ -7,12 +7,13 @@ import {
   OnChanges,
   OnInit,
   SimpleChanges,
-  ViewChild
+  ViewChild, ChangeDetectionStrategy
 } from '@angular/core';
 import {Box, BoxValue, Picture} from '@app/models';
 
 @Component({
   selector: 'app-picture',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <canvas #layout
             (mousedown)="mdEvent($event)"
