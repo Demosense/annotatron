@@ -1,4 +1,4 @@
-import * as fromBoxes from '../actions';
+import * as fromBoxes from '../actions/boxes.actions';
 import { Box } from '@app/models';
 
 export interface BoxState {

@@ -32,7 +32,7 @@ export class PictureComponent implements OnInit, OnChanges {
   @Output() boxDrawn = new EventEmitter<any>();
   @ViewChild('layout') canvas: ElementRef;
 
-  public pictureId: number = null;
+  public currentPictureId: number = null;
   public data;
   public startX: number = null;
   public startY: number = null;
@@ -41,8 +41,8 @@ export class PictureComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ((this.picture) && (this.picture.id !== this.pictureId)) {
-      this.pictureId = this.picture.id;
+    if ((this.picture) && (this.picture.id !== this.currentPictureId)) {
+      this.currentPictureId = this.picture.id;
       const source = new Image();
       source.crossOrigin = 'Anonymous';
       source.src = this.pictureData;
@@ -51,15 +51,11 @@ export class PictureComponent implements OnInit, OnChanges {
       this.canvas.nativeElement.width = this.picture.width;
       this.canvas.nativeElement.getContext('2d').drawImage(source, 0, 0);
       this.canvas.nativeElement.getContext('2d').setLineDash([6]);
-      for (const key in this.boxes) {
+      Object.keys(this.boxes).forEach(key => {
+        const { x0, y0, x1, y1 } = this.boxes[key];
         this.canvas.nativeElement.getContext('2d').strokeStyle = this.boxesEntities[this.boxes[key].id].color;
-        this.canvas.nativeElement.getContext('2d').strokeRect(
-          this.boxes[key].points.x0,
-          this.boxes[key].points.y0,
-          this.boxes[key].points.x1 - this.boxes[key].points.x0,
-          this.boxes[key].points.y1 - this.boxes[key].points.y0
-        );
-      }
+        this.canvas.nativeElement.getContext('2d').strokeRect(x0, y0, x1 - x0, y1 - y0);
+      });
     }
   }
 
@@ -107,17 +103,14 @@ export class PictureComponent implements OnInit, OnChanges {
   }
 
   public drawBoxes() {
-    for (const key in this.boxes) {
-      if (this.boxes[key].id !== this.selectedBox.id) {
+    Object.keys(this.boxes).forEach(key => {
+      const { id, x0, y0, x1, y1 } = this.boxes[key];
+
+      if (id !== this.selectedBox.id) {
         this.canvas.nativeElement.getContext('2d').strokeStyle = 'red';
         this.canvas.nativeElement.getContext('2d').strokeStyle = this.boxesEntities[this.boxes[key].id].color;
-        this.canvas.nativeElement.getContext('2d').strokeRect(
-          this.boxes[key].points.x0,
-          this.boxes[key].points.y0,
-          this.boxes[key].points.x1 - this.boxes[key].points.x0,
-          this.boxes[key].points.y1 - this.boxes[key].points.y0
-        );
+        this.canvas.nativeElement.getContext('2d').strokeRect(x0, y0, x1 - x0, y1 - y0);
       }
-    }
+    });
   }
 }

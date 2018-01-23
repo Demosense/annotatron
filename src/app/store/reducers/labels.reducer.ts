@@ -1,4 +1,4 @@
-import * as fromLabels from '../actions';
+import * as fromLabels from '../actions/labels.actions';
 import { Label } from '@app/models';
 
 export interface LabelState {

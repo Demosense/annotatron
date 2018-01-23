@@ -14,7 +14,7 @@ export class ConfigurerEffects {
 
   constructor(
     private actions$: Actions,
-    private configurer: ConfigurationService,
+    private configurationService: ConfigurationService,
   ) {}
 
   /**
@@ -32,7 +32,7 @@ export class ConfigurerEffects {
       map((action: configurerActions.ParseConfig) => action.payload),
       switchMap(x => of(x)
           .pipe(
-            map(configString => this.configurer.parseConfigString(configString)),
+            map(configString => this.configurationService.parseConfigString(configString)),
             mergeMap(({ labels, boxes }) => [
               new labelActions.LoadLabels(labels),
               new boxesActions.LoadBoxes(boxes),
