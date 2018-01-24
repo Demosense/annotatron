@@ -12,12 +12,43 @@ import { PicturesService } from '@app/services';
 @Component({
   selector: 'app-main',
   template: `
-    <div fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="10px" >
+    <div class="wrapper" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="10px" >
+
+      <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="10px">
+        <mat-card fxFlex="25" class="element-list">
+          <mat-card-header>
+            <mat-card-title>Boxes</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <app-box-list
+              [boxes]="boxes$ | async"
+              (select)="selectBox($event)">
+            </app-box-list>
+          </mat-card-content>
+        </mat-card>
+
+          <mat-card fxFlex="75" class="element-list">
+            <mat-card-header>
+              <mat-card-title>Labels</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <app-label-list
+                [labels]="labels$ | async"
+                [labelValues]="(picture$ | async)?.labels"
+                (updates)="updateLabel($event)">
+              </app-label-list>
+            </mat-card-content>
+          </mat-card>
+        </div>
 
       <mat-card>
         <mat-card-header>
           <mat-card-title>{{ (picture$ | async)?.file | slice:0:20 }}</mat-card-title>
         </mat-card-header>
+        <mat-card-actions fxLayoutAlign="center center">
+          <app-picture-button [icon]="'keyboard_arrow_left'" (changePicture)="previousPicture()"></app-picture-button>
+          <app-picture-button [icon]="'keyboard_arrow_right'"  (changePicture)="nextPicture()"></app-picture-button>
+        </mat-card-actions>
         <mat-card-content>
           <app-picture
             [picture]="picture$ | async"
@@ -28,41 +59,21 @@ import { PicturesService } from '@app/services';
             (boxDrawn)="boxDrawn($event)">
           </app-picture>
         </mat-card-content>
-        <mat-card-actions fxLayoutAlign="center center">
-          <app-picture-button [icon]="'keyboard_arrow_left'" (changePicture)="previousPicture()"></app-picture-button>
-          <app-picture-button [icon]="'keyboard_arrow_right'"  (changePicture)="nextPicture()"></app-picture-button>
-        </mat-card-actions>
       </mat-card>
 
-      <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="10px" >
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>Boxes</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <app-box-list
-            [boxes]="boxes$ | async"
-            (select)="selectBox($event)">
-            </app-box-list>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>Labels</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <app-label-list
-              [labels]="labels$ | async"
-              [labelValues]="(picture$ | async)?.labels"
-              (updates)="updateLabel($event)">
-            </app-label-list>
-          </mat-card-content>
-        </mat-card>
-      </div>
     </div>
   `,
-  styles: []
+  styles: [`
+    .wrapper {
+      padding: 15px;
+      height: 100%;
+    }
+
+    .element-list {
+      overflow: scroll;
+    }
+
+  `]
 })
 export class MainComponent implements OnInit {
 

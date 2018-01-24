@@ -13,8 +13,8 @@ import { PicturesService } from '@app/services';
 @Component({
   selector: 'app-sidenav',
   template: `
-    <mat-sidenav-container class="mat-elevation-z6">
-      <mat-sidenav mode="side" opened="true" class="mat-elevation-z6">
+    <mat-sidenav-container>
+      <mat-sidenav mode="side" opened="true" class="mat-elevation-z4">
         <mat-nav-list>
           <app-sidenav-upload-files-element
             (upload)="uploadPictures($event)">
@@ -33,15 +33,21 @@ import { PicturesService } from '@app/services';
           </app-sidenav-picture-list>
         </mat-nav-list>
       </mat-sidenav>
-      <mat-sidenav-content fxLayout="row" fxLayoutAlign="center stretch" fxLayoutGap="10px">
+      <mat-sidenav-content>
         <ng-content></ng-content>
       </mat-sidenav-content>
     </mat-sidenav-container>
   `,
   styles: [`
+    mat-sidenav {
+      box-shadow: 3px 0 6px rgba(0, 0, 0, .24);
+      padding-bottom: 72px;
+      bottom: 0;
+      overflow: auto;
+      height: 100%;
+    }
     mat-sidenav-container {
-      height: 100vh;
-      padding-top: 15px;
+      height: 100%;
     }
   `]
 
