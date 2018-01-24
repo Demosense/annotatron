@@ -14,22 +14,20 @@ import { PicturesService } from '@app/services';
   template: `
     <div class="wrapper" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="10px" >
 
-      <div>
-        <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="10px" >
+      <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="10px">
+        <mat-card fxFlex="25" class="element-list">
+          <mat-card-header>
+            <mat-card-title>Boxes</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <app-box-list
+              [boxes]="boxes$ | async"
+              (select)="selectBox($event)">
+            </app-box-list>
+          </mat-card-content>
+        </mat-card>
 
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title>Boxes</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <app-box-list
-                [boxes]="boxes$ | async"
-                (select)="selectBox($event)">
-              </app-box-list>
-            </mat-card-content>
-          </mat-card>
-
-          <mat-card>
+          <mat-card fxFlex="75" class="element-list">
             <mat-card-header>
               <mat-card-title>Labels</mat-card-title>
             </mat-card-header>
@@ -41,14 +39,12 @@ import { PicturesService } from '@app/services';
               </app-label-list>
             </mat-card-content>
           </mat-card>
-
         </div>
-      </div>
 
       <mat-card>
         <mat-card-header>
           <mat-card-title>{{ (picture$ | async)?.file | slice:0:20 }}</mat-card-title>
-        </mat-card-header>        
+        </mat-card-header>
         <mat-card-actions fxLayoutAlign="center center">
           <app-picture-button [icon]="'keyboard_arrow_left'" (changePicture)="previousPicture()"></app-picture-button>
           <app-picture-button [icon]="'keyboard_arrow_right'"  (changePicture)="nextPicture()"></app-picture-button>
@@ -70,7 +66,13 @@ import { PicturesService } from '@app/services';
   styles: [`
     .wrapper {
       padding: 15px;
+      height: 100%;
     }
+
+    .element-list {
+      overflow: scroll;
+    }
+
   `]
 })
 export class MainComponent implements OnInit {

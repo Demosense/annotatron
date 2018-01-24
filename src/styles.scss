@@ -35,6 +35,10 @@ app-sidenav-upload-files-element {
   }
 }
 
+app-main {
+  height: 100%;
+}
+
 @media (max-width: 720px) {
   app-root {
     top: 92px;
