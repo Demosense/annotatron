@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 import { Label, LabelValue } from '@app/models';
 
 @Component({
   selector: 'app-label-list-element',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div fxLayout="row" fxLayoutGap="0px">
 

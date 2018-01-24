@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { first, map, combineLatest, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -11,6 +11,7 @@ import { PicturesService } from '@app/services';
 
 @Component({
   selector: 'app-main',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="wrapper" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="10px" >
 
@@ -22,6 +23,7 @@ import { PicturesService } from '@app/services';
           <mat-card-content>
             <app-box-list
               [boxes]="boxes$ | async"
+              [selectedBoxId]="(selectedBox$ | async)?.id"
               (select)="selectBox($event)">
             </app-box-list>
           </mat-card-content>

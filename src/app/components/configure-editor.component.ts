@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-configure-editor',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <form [formGroup]="form">
       <mat-form-field>

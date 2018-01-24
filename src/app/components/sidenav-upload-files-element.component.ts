@@ -1,7 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-sidenav-upload-files-element',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a mat-list-item (click)="selectFile()">
       <mat-icon mat-list-icon>add_a_photo</mat-icon>

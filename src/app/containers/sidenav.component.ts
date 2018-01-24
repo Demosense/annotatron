@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import {Observable} from 'rxjs/Observable';
@@ -12,6 +12,7 @@ import { PicturesService } from '@app/services';
 
 @Component({
   selector: 'app-sidenav',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <mat-sidenav-container>
       <mat-sidenav mode="side" opened="true" class="mat-elevation-z4">
@@ -81,9 +82,9 @@ export class SidenavComponent implements OnInit {
     // Store devtools cannot serialize event.target.files and thus we must
     // handle async operation here.
     this.store.dispatch(new fromStore.LoadPictures());
-
     this.picturesService.uploadPictures(event.target.files)
       .then((pictures) => {
+          console.log(pictures);
           this.picturesService.setPictureData(pictures.map(p => p.data));
           this.store.dispatch(new fromStore.LoadPicturesSuccess(pictures.map(p => p.picture)));
       }
