@@ -12,7 +12,38 @@ import { PicturesService } from '@app/services';
 @Component({
   selector: 'app-main',
   template: `
-    <div fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="10px" >
+    <div class="wrapper" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="10px" >
+
+      <div>
+        <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="10px" >
+
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Boxes</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <app-box-list
+                [boxes]="boxes$ | async"
+                (select)="selectBox($event)">
+              </app-box-list>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Labels</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <app-label-list
+                [labels]="labels$ | async"
+                [labelValues]="(picture$ | async)?.labels"
+                (updates)="updateLabel($event)">
+              </app-label-list>
+            </mat-card-content>
+          </mat-card>
+
+        </div>
+      </div>
 
       <mat-card>
         <mat-card-header>
@@ -34,35 +65,13 @@ import { PicturesService } from '@app/services';
         </mat-card-actions>
       </mat-card>
 
-      <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="10px" >
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>Boxes</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <app-box-list
-            [boxes]="boxes$ | async"
-            (select)="selectBox($event)">
-            </app-box-list>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>Labels</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <app-label-list
-              [labels]="labels$ | async"
-              [labelValues]="(picture$ | async)?.labels"
-              (updates)="updateLabel($event)">
-            </app-label-list>
-          </mat-card-content>
-        </mat-card>
-      </div>
     </div>
   `,
-  styles: []
+  styles: [`
+    .wrapper {
+      padding: 15px;
+    }
+  `]
 })
 export class MainComponent implements OnInit {
 
