@@ -48,7 +48,11 @@ import { PicturesService } from '@app/services';
       <mat-card>
         <mat-card-header>
           <mat-card-title>{{ (picture$ | async)?.file | slice:0:20 }}</mat-card-title>
-        </mat-card-header>
+        </mat-card-header>        
+        <mat-card-actions fxLayoutAlign="center center">
+          <app-picture-button [icon]="'keyboard_arrow_left'" (changePicture)="previousPicture()"></app-picture-button>
+          <app-picture-button [icon]="'keyboard_arrow_right'"  (changePicture)="nextPicture()"></app-picture-button>
+        </mat-card-actions>
         <mat-card-content>
           <app-picture
             [picture]="picture$ | async"
@@ -59,10 +63,6 @@ import { PicturesService } from '@app/services';
             (boxDrawn)="boxDrawn($event)">
           </app-picture>
         </mat-card-content>
-        <mat-card-actions fxLayoutAlign="center center">
-          <app-picture-button [icon]="'keyboard_arrow_left'" (changePicture)="previousPicture()"></app-picture-button>
-          <app-picture-button [icon]="'keyboard_arrow_right'"  (changePicture)="nextPicture()"></app-picture-button>
-        </mat-card-actions>
       </mat-card>
 
     </div>
