@@ -2,12 +2,12 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import {Observable} from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
+import {first, map} from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
 import * as fromStore from '../store';
 import * as fromRoot from '@app/store';
-import { Picture} from '@app/models';
+import {Box, Label, Picture} from '@app/models';
 import { PicturesService } from '@app/services';
 
 @Component({
@@ -59,6 +59,8 @@ export class SidenavComponent implements OnInit {
   picturesData$: Observable<string[]>;
   labelJsonUri$: Observable<any>;
   downloadName$: Observable<string>;
+  boxes$: Observable<Box[]>;
+  labels$: Observable<Label[]>;
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -66,12 +68,14 @@ export class SidenavComponent implements OnInit {
     private picturesService: PicturesService,
   ) {
     this.pictures$ = this.store.select(fromRoot.getAllPictures);
+    this.boxes$ = this.store.select(fromRoot.getAllBoxes);
+    this.labels$ = this.store.select(fromRoot.getAllLabels);
     this.picturesData$ = this.picturesService.getPictureData();
     this.labelJsonUri$ = this.store.select(fromRoot.getLabelledPictures).pipe(
       map(labelledPictures => this.toJsonUri(labelledPictures)),
     );
     this.downloadName$ = this.labelJsonUri$.pipe(
-      map(() => `${Date.now()}.json`),
+      map(() => `${Date.now()}.csv`),
     );
   }
 
@@ -98,10 +102,63 @@ export class SidenavComponent implements OnInit {
   }
 
   private toJsonUri(o: Object) {
-    const HEADER = 'data:text/json;charset=UTF-8,';
-    const s = JSON.stringify(o);
-    const uri = encodeURIComponent(s);
-    return this.sanitizer.bypassSecurityTrustUrl(`${HEADER}${uri}`);
+    const csvData = this.ConvertToCSV(JSON.stringify(o));
+    const blob = new Blob([csvData], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
+  private ConvertToCSV(objArray) {
+    const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
+    let header = 'filename,';
+    let boxes;
+    let labels;
+    let csvResult = '';
+
+    // Creating CSV header
+    this.labels$.pipe(
+      first(),
+    ).subscribe(lbs => {
+      labels = lbs;
+      lbs.map( label => {
+          header += label.name + ',';
+        }
+      ); });
+
+    this.boxes$.pipe(
+      first(),
+    ).subscribe(bxs => {
+      boxes = bxs;
+      bxs.map( box => {
+          header += box.name + ',';
+        }
+      ); });
+    csvResult = header.substring(0, header.length - 1) + '\r\n';
+
+    // Creating CSV data
+    for (let i = 0; i < array.length; i++) {
+      let line = array[i].file + ',';
+      console.log(array[i]);
+      for (let iL = 0; iL < labels.length; iL++) {
+        if (array[i].labels[labels[iL].name] === undefined) {
+          line += ',';
+        } else {
+          line += array[i].labels[labels[iL].name] + ',';
+        }
+      }
+      for (let iB = 0; iB < boxes.length; iB++) {
+        if (array[i].boxes[boxes[iB].name] === undefined) {
+          line += ',';
+        } else {
+          line += array[i].boxes[boxes[iB].name].x0 + '-' +
+                  array[i].boxes[boxes[iB].name].y0 + '-' +
+                  array[i].boxes[boxes[iB].name].x1 + '-' +
+                  array[i].boxes[boxes[iB].name].y1 + ',';
+        }
+      }
+
+      csvResult +=  line.substring(0, line.length - 1) + '\r\n';
+    }
+    return csvResult;
+  }
 }
