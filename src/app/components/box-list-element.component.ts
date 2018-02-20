@@ -30,8 +30,4 @@ export class BoxListElementComponent implements OnInit {
   ngOnInit() {
   }
 
-  @HostListener('window:keydown', ['$event'])
-  private hotkeys(event) {
-    return;
-  }
 }

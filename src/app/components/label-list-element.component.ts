@@ -23,13 +23,11 @@ import { Label, LabelValue } from '@app/models';
             <mat-radio-group
               fxLayout="column"
               (change)="changeValue.emit($event.value)"
-              (keydown)="keyPress($event)"
               [value]="labelValue?.value || ''"
             >
               <mat-radio-button
                 *ngFor="let cat of label.range"
                 [value]="cat"
-                (keydown)="keyPress($event)"
               >{{cat}}
               </mat-radio-button>
             </mat-radio-group>
@@ -72,14 +70,9 @@ export class LabelListElementComponent implements OnInit {
   @Input() label: Label;
   @Input() labelValue: LabelValue;
   @Output() changeValue = new EventEmitter<string>();
-  @ViewChild('radioGroup') input;
 
   constructor() {}
 
   ngOnInit() {
-  }
-
-  private keyPress(event) {
-    return;
   }
 }
