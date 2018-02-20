@@ -1,4 +1,7 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnInit, Output,
+  ViewChild
+} from '@angular/core';
 
 import { Label, LabelValue } from '@app/models';
 
@@ -20,10 +23,12 @@ import { Label, LabelValue } from '@app/models';
             <mat-radio-group
               fxLayout="column"
               (change)="changeValue.emit($event.value)"
-              [value]="labelValue?.value || ''">
+              [value]="labelValue?.value || ''"
+            >
               <mat-radio-button
                 *ngFor="let cat of label.range"
-                [value]="cat">{{cat}}
+                [value]="cat"
+              >{{cat}}
               </mat-radio-button>
             </mat-radio-group>
           </div>
@@ -70,5 +75,4 @@ export class LabelListElementComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

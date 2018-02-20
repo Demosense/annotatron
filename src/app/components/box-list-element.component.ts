@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, HostListener, Input, OnInit} from '@angular/core';
 
 import { Box } from '@app/models';
 
@@ -29,4 +29,5 @@ export class BoxListElementComponent implements OnInit {
 
   ngOnInit() {
   }
+
 }

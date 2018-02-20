@@ -88,7 +88,6 @@ export class SidenavComponent implements OnInit {
     this.store.dispatch(new fromStore.LoadPictures());
     this.picturesService.uploadPictures(event.target.files)
       .then((pictures) => {
-          console.log(pictures);
           this.picturesService.setPictureData(pictures.map(p => p.data));
           this.store.dispatch(new fromStore.LoadPicturesSuccess(pictures.map(p => p.picture)));
       }
@@ -138,7 +137,6 @@ export class SidenavComponent implements OnInit {
     // Creating CSV data
     for (let i = 0; i < array.length; i++) {
       let line = array[i].file + ',';
-      console.log(array[i]);
       for (let iL = 0; iL < labels.length; iL++) {
         if (array[i].labels[labels[iL].name] === undefined) {
           line += ',';
