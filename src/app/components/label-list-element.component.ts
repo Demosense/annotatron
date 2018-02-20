@@ -1,4 +1,7 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnInit, Output,
+  ViewChild
+} from '@angular/core';
 
 import { Label, LabelValue } from '@app/models';
 
@@ -20,10 +23,14 @@ import { Label, LabelValue } from '@app/models';
             <mat-radio-group
               fxLayout="column"
               (change)="changeValue.emit($event.value)"
-              [value]="labelValue?.value || ''">
+              (keydown)="keyPress($event)"
+              [value]="labelValue?.value || ''"
+            >
               <mat-radio-button
                 *ngFor="let cat of label.range"
-                [value]="cat">{{cat}}
+                [value]="cat"
+                (keydown)="keyPress($event)"
+              >{{cat}}
               </mat-radio-button>
             </mat-radio-group>
           </div>
@@ -65,10 +72,14 @@ export class LabelListElementComponent implements OnInit {
   @Input() label: Label;
   @Input() labelValue: LabelValue;
   @Output() changeValue = new EventEmitter<string>();
+  @ViewChild('radioGroup') input;
 
   constructor() {}
 
   ngOnInit() {
   }
 
+  private keyPress(event) {
+    return;
+  }
 }

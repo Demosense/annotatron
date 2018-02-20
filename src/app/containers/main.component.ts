@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, HostListener, OnInit} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { first, map, combineLatest, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -48,8 +48,16 @@ import { PicturesService } from '@app/services';
           <mat-card-title>{{ (picture$ | async)?.file | slice:0:20 }}</mat-card-title>
         </mat-card-header>
         <mat-card-actions fxLayoutAlign="center center">
-          <app-picture-button [icon]="'keyboard_arrow_left'" (changePicture)="previousPicture()"></app-picture-button>
-          <app-picture-button [icon]="'keyboard_arrow_right'"  (changePicture)="nextPicture()"></app-picture-button>
+          <app-picture-button
+            [icon]="'keyboard_arrow_left'"
+            [numKey]="37"
+            (changePicture)="previousPicture()"
+          ></app-picture-button>
+          <app-picture-button
+            [icon]="'keyboard_arrow_right'"
+            [numKey]="39"
+            (changePicture)="nextPicture()"
+          ></app-picture-button>
         </mat-card-actions>
         <mat-card-content>
           <app-picture

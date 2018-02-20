@@ -1,4 +1,11 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter, HostListener,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core';
 
 @Component({
   selector: 'app-picture-button',
@@ -13,6 +20,7 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output}
 export class PictureButtonComponent implements OnInit {
 
   @Input() icon: string;
+  @Input() numKey: number;
   @Output() changePicture = new EventEmitter<any>();
 
   constructor() { }
@@ -22,5 +30,12 @@ export class PictureButtonComponent implements OnInit {
 
   public onChangePicture() {
     this.changePicture.emit();
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  private hotkeys(event) {
+    if (event.keyCode === this.numKey) {
+      this.changePicture.emit();
+    }
   }
 }

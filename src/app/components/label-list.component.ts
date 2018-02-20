@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 
 import { Label, LabelValue } from '@app/models';
 
@@ -31,5 +31,4 @@ export class LabelListComponent implements OnInit {
   private updateLabel(id: number, value: string) {
     this.updates.emit({ id, value });
   }
-
 }
