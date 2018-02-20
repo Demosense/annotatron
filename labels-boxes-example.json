@@ -1,0 +1,20 @@
+{
+ "labels": [
+   {
+     "name": "gender",
+     "type": "category",
+     "range": ["male","female"]
+   },
+   {
+     "name": "age",
+     "type": "category",
+     "range": ["child","young", "adult","old"]
+   }
+ ],
+ "boxes": [
+   {
+     "name": "head",
+     "color" : "red"
+   }
+ ]
+}
