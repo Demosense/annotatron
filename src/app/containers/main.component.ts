@@ -1,9 +1,14 @@
-import {ChangeDetectionStrategy, Component, HostListener, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { first, map, combineLatest, withLatestFrom } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import {Box, Label, Picture} from '@app/models';
+import { Box, Label, Picture } from '@app/models';
 import * as fromRoot from '@app/store';
 
 import { LabelValue } from '@app/models/label';
@@ -45,7 +50,12 @@ import { PicturesService } from '@app/services';
 
       <mat-card>
         <mat-card-header>
-          <mat-card-title>{{ (picture$ | async)?.file | slice:0:20 }}</mat-card-title>
+          <mat-card-title>
+            {{ (picture$ | async)?.file | slice:0:20 }}
+            <button mat-icon-button *ngIf="(picture$ | async)?.file" (click)="removePicture()">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-title>
         </mat-card-header>
         <mat-card-actions fxLayoutAlign="center center">
           <app-picture-button
@@ -73,7 +83,8 @@ import { PicturesService } from '@app/services';
 
     </div>
   `,
-  styles: [`
+  styles: [
+    `
     .wrapper {
       padding: 15px;
       height: 100%;
@@ -83,10 +94,10 @@ import { PicturesService } from '@app/services';
       overflow: scroll;
     }
 
-  `]
+  `,
+  ],
 })
 export class MainComponent implements OnInit {
-
   boxes$: Observable<Box[]>;
   boxEntities$: Observable<{ [id: number]: Box }>;
   labels$: Observable<Label[]>;
@@ -97,7 +108,7 @@ export class MainComponent implements OnInit {
 
   constructor(
     private store: Store<fromRoot.State>,
-    private picturesService: PicturesService,
+    private picturesService: PicturesService
   ) {
     this.boxes$ = this.store.select(fromRoot.getAllBoxes);
     this.labels$ = this.store.select(fromRoot.getAllLabels);
@@ -105,22 +116,24 @@ export class MainComponent implements OnInit {
     this.picture$ = this.store.select(fromRoot.getSelectedPicture);
     this.pictures$ = this.store.select(fromRoot.getAllPictures);
     this.selectedBox$ = this.store.select(fromRoot.getSelectedBox);
-    this.pictureData$ = this.picturesService.getPictureData().pipe(
-      combineLatest(this.picture$),
-      map(([data, picture]) => picture ? data[picture.id] : ''),
-    );
+    this.pictureData$ = this.picturesService
+      .getPictureData()
+      .pipe(
+        combineLatest(this.picture$),
+        map(([data, picture]) => (picture ? data[picture.id] : ''))
+      );
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   private updateLabel(labelValue: LabelValue) {
-    this.picture$.pipe(
-      first(),
-    ).subscribe(
-      picture => this.store.dispatch(
-        new fromRoot.UpdateLabel({ pictureId: picture.id, labelValue }))
-    );
+    this.picture$
+      .pipe(first())
+      .subscribe(picture =>
+        this.store.dispatch(
+          new fromRoot.UpdateLabel({ pictureId: picture.id, labelValue })
+        )
+      );
   }
 
   private selectBox(event: Box) {
@@ -128,39 +141,66 @@ export class MainComponent implements OnInit {
   }
 
   private boxDrawn({ x0, y0, x1, y1 }) {
-    this.picture$.pipe(
-      withLatestFrom(this.selectedBox$),
-      first(),
-    ).subscribe(
-      ([picture, selectedBox]) =>
-          this.store.dispatch(
-            new fromRoot.UpdateBox( {
-              pictureId: picture.id,
-              boxValue: { id: selectedBox.id, x0, y0, x1, y1 },
-            })
-          )
-    );
+    this.picture$
+      .pipe(withLatestFrom(this.selectedBox$), first())
+      .subscribe(([picture, selectedBox]) =>
+        this.store.dispatch(
+          new fromRoot.UpdateBox({
+            pictureId: picture.id,
+            boxValue: { id: selectedBox.id, x0, y0, x1, y1 },
+          })
+        )
+      );
   }
 
   private previousPicture() {
-    this.pictures$.pipe(
-      withLatestFrom(this.picture$),
-      first(),
-    ).subscribe(
-      ([pictures, picture]) => this.store.dispatch(
-        new fromRoot.Go({ path: ['/', (picture.id == 0 ? pictures.length - 1 : picture.id - 1)] })
-      )
-    );
+    this.pictures$
+      .pipe(withLatestFrom(this.picture$), first())
+      .subscribe(([pictures, picture]) => {
+        const previousPictures = pictures.filter(p => p.id < picture.id);
+        this.store.dispatch(
+          new fromRoot.Go({
+            path: [
+              '/',
+              previousPictures.length > 0
+                ? previousPictures[previousPictures.length - 1].id
+                : pictures[pictures.length - 1].id,
+            ],
+          })
+        );
+      });
   }
 
   private nextPicture() {
-    this.pictures$.pipe(
-      withLatestFrom(this.picture$),
-      first(),
-    ).subscribe(
-      ([pictures, picture]) => this.store.dispatch(
-          new fromRoot.Go({path: ['/', ((picture.id + 1) % pictures.length)]}))
-    );
+    this.pictures$
+      .pipe(withLatestFrom(this.picture$), first())
+      .subscribe(([pictures, picture]) => {
+        const nextPictures = pictures.filter(p => p.id > picture.id);
+        this.store.dispatch(
+          new fromRoot.Go({
+            path: [
+              '/',
+              nextPictures.length > 0 ? nextPictures[0].id : pictures[0].id,
+            ],
+          })
+        );
+      });
+  }
+
+  private removePicture() {
+    this.pictures$
+      .pipe(withLatestFrom(this.picture$), first())
+      .subscribe(([pictures, picture]) => {
+        const previousPictures = pictures.filter(p => p.id < picture.id);
+        this.store.dispatch(
+          new fromRoot.RemovePicture({
+            pictureId: picture.id,
+            previousPictureId:
+              previousPictures.length > 0
+                ? previousPictures[previousPictures.length - 1].id
+                : pictures[pictures.length - 1].id,
+          })
+        );
+      });
   }
 }
-

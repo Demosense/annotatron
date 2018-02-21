@@ -108,6 +108,16 @@ export function reducer(
         entities: modEntities,
       };
     }
+
+    case fromPictures.PicturesActionTypes.RemovePicture: {
+      const { pictureId, previousPictureId } = action.payload;
+      const { [pictureId]: removed, ...entities } = state.entities;
+
+      return {
+        ...state,
+        entities,
+      };
+    }
   }
 
   return state;

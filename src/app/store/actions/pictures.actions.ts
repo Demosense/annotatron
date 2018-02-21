@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 
-import {BoxValue, LabelValue, Picture} from '@app/models';
+import { BoxValue, LabelValue, Picture } from '@app/models';
 
 export enum PicturesActionTypes {
   LoadPictures = '[Root] LoadPictures',
@@ -8,6 +8,7 @@ export enum PicturesActionTypes {
   LoadPicturesFail = '[Root] LoadPicturesFail',
   UpdateLabel = '[Root] UpdateLabel',
   UpdateBox = '[Root] UpdateBox',
+  RemovePicture = '[Root] RemovePicture',
 }
 
 export class LoadPictures implements Action {
@@ -26,17 +27,25 @@ export class LoadPicturesFail implements Action {
 
 export class UpdateLabel implements Action {
   readonly type = PicturesActionTypes.UpdateLabel;
-  constructor(public payload: { pictureId: number, labelValue: LabelValue }) {}
+  constructor(public payload: { pictureId: number; labelValue: LabelValue }) {}
 }
 
 export class UpdateBox implements Action {
   readonly type = PicturesActionTypes.UpdateBox;
-  constructor(public payload: { pictureId: number, boxValue: BoxValue }) {}
+  constructor(public payload: { pictureId: number; boxValue: BoxValue }) {}
+}
+
+export class RemovePicture implements Action {
+  readonly type = PicturesActionTypes.RemovePicture;
+  constructor(
+    public payload: { pictureId: number; previousPictureId: number }
+  ) {}
 }
 
 export type PicturesActions =
-  LoadPictures |
-  LoadPicturesSuccess |
-  LoadPicturesFail |
-  UpdateLabel |
-  UpdateBox;
+  | LoadPictures
+  | LoadPicturesSuccess
+  | LoadPicturesFail
+  | UpdateLabel
+  | UpdateBox
+  | RemovePicture;

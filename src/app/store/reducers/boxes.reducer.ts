@@ -18,7 +18,6 @@ export function reducer(
   action: fromBoxes.BoxesActions
 ): BoxState {
   switch (action.type) {
-
     case fromBoxes.BoxesActionTypes.LoadBoxes: {
       const boxes = action.payload;
       let index = 0;
@@ -47,7 +46,7 @@ export function reducer(
       const selectedBox = action.payload;
       return {
         ...state,
-        selectedBox
+        selectedBox,
       };
     }
   }
@@ -57,4 +56,3 @@ export function reducer(
 export const getBoxesEntities = (state: BoxState) => state.entities;
 export const getBoxesLoaded = (state: BoxState) => state.loaded;
 export const getSelectedBox = (state: BoxState) => state.selectedBox;
-
