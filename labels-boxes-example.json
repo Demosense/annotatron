@@ -1,20 +1,24 @@
 {
- "labels": [
-   {
-     "name": "gender",
-     "type": "category",
-     "range": ["male","female"]
-   },
-   {
-     "name": "age",
-     "type": "category",
-     "range": ["child","young", "adult","old"]
-   }
- ],
- "boxes": [
-   {
-     "name": "head",
-     "color" : "red"
-   }
- ]
+  "labels": [
+    {
+      "name": "Gender",
+      "type": "category",
+      "range": ["Man", "Female"]
+    },
+    {
+      "name": "Age",
+      "type": "category",
+      "range": ["Young", "Adult-Young", "Adult-Old", "Old"]
+    }
+  ],
+  "boxes": [
+    {
+      "name": "Head",
+      "color": "red"
+    },
+    {
+      "name": "Body",
+      "color": "blue"
+    }
+  ]
 }
