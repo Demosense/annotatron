@@ -1,10 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter, HostListener,
+  EventEmitter,
+  HostListener,
   Input,
   OnInit,
-  Output
+  Output,
 } from '@angular/core';
 
 @Component({
@@ -15,18 +16,16 @@ import {
       <mat-icon aria-label="Example icon-button with a heart icon">{{ icon }}</mat-icon>
     </button>
   `,
-  styles: []
+  styles: [],
 })
 export class PictureButtonComponent implements OnInit {
-
   @Input() icon: string;
   @Input() numKey: number;
   @Output() changePicture = new EventEmitter<any>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public onChangePicture() {
     this.changePicture.emit();

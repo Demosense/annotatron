@@ -60,12 +60,12 @@ import { PicturesService } from '@app/services';
         <mat-card-actions fxLayoutAlign="center center">
           <app-picture-button
             [icon]="'keyboard_arrow_left'"
-            [numKey]="37"
+            [numKey]="65"
             (changePicture)="previousPicture()"
           ></app-picture-button>
           <app-picture-button
             [icon]="'keyboard_arrow_right'"
-            [numKey]="39"
+            [numKey]="68"
             (changePicture)="nextPicture()"
           ></app-picture-button>
         </mat-card-actions>
