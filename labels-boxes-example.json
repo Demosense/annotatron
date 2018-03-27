@@ -8,7 +8,7 @@
     {
       "name": "Age",
       "type": "category",
-      "range": ["Young", "Adult-Young", "Adult-Old", "Old"]
+      "range": ["CHILD", "YOUNG", "ADULT-YOUNG", "ADULT", "OLD"]
     }
   ],
   "boxes": [
