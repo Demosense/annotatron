@@ -1,6 +1,13 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnInit, Output,
-  ViewChild
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
 } from '@angular/core';
 
 import { Label, LabelValue } from '@app/models';
@@ -38,7 +45,7 @@ import { Label, LabelValue } from '@app/models';
                         (change)="changeValue.emit($event.value)"
                         [min]="label.range[0]"
                         [max]="label.range[1]"
-                        [step]="label.range[3] || 1"
+                        [step]="label.range[2] || 1"
                         [thumbLabel]="true"
                         [value]="labelValue?.value || label.range[0]">
             </mat-slider>
@@ -50,7 +57,8 @@ import { Label, LabelValue } from '@app/models';
 
     </div>
   `,
-  styles: [`
+  styles: [
+    `
     .label-status {
       background-color: grey;
     }
@@ -59,10 +67,10 @@ import { Label, LabelValue } from '@app/models';
       padding: 3;
       padding-left: 10px;
     }
-  `]
+  `,
+  ],
 })
 export class LabelListElementComponent implements OnInit {
-
   // Substitute these with the enum when possible.
   readonly LABEL_CATEGORY = 'category';
   readonly LABEL_RANGE = 'range';
@@ -73,6 +81,5 @@ export class LabelListElementComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }
