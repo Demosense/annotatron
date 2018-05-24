@@ -126,7 +126,7 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {}
 
-  private updateLabel(labelValue: LabelValue) {
+  updateLabel(labelValue: LabelValue) {
     this.picture$
       .pipe(first())
       .subscribe(picture =>
@@ -136,11 +136,11 @@ export class MainComponent implements OnInit {
       );
   }
 
-  private selectBox(event: Box) {
+  selectBox(event: Box) {
     this.store.dispatch(new fromRoot.SelectedBox(event));
   }
 
-  private boxDrawn({ x0, y0, x1, y1 }) {
+  boxDrawn({ x0, y0, x1, y1 }) {
     this.picture$
       .pipe(withLatestFrom(this.selectedBox$), first())
       .subscribe(([picture, selectedBox]) =>
@@ -153,7 +153,7 @@ export class MainComponent implements OnInit {
       );
   }
 
-  private previousPicture() {
+  previousPicture() {
     this.pictures$
       .pipe(withLatestFrom(this.picture$), first())
       .subscribe(([pictures, picture]) => {
@@ -171,7 +171,7 @@ export class MainComponent implements OnInit {
       });
   }
 
-  private nextPicture() {
+  nextPicture() {
     this.pictures$
       .pipe(withLatestFrom(this.picture$), first())
       .subscribe(([pictures, picture]) => {
@@ -187,7 +187,7 @@ export class MainComponent implements OnInit {
       });
   }
 
-  private removePicture() {
+  removePicture() {
     this.pictures$
       .pipe(withLatestFrom(this.picture$), first())
       .subscribe(([pictures, picture]) => {

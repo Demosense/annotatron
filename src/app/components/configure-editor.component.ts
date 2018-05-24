@@ -54,7 +54,7 @@ export class ConfigureEditorComponent implements OnInit {
 
   ngOnInit() {}
 
-  private save() {
+  save() {
     this.saveConfig.emit(this.form.value[this.FORM_CONTROL_CONFIG_STRING]);
   }
 }

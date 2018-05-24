@@ -27,11 +27,11 @@ export class AppComponent {
 
   constructor(private store: Store<fromRoot.State>) {}
 
-  private navigateHome() {
+  navigateHome() {
     this.store.dispatch(new fromRoot.Go({ path: [''] }));
   }
 
-  private navigateConfigure() {
+  navigateConfigure() {
     this.store.dispatch(new fromRoot.Go({ path: ['configure'] }));
   }
 }
