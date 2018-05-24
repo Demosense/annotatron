@@ -16,7 +16,6 @@ export function reducer(
   action: fromLabels.LabelsActions
 ): LabelState {
   switch (action.type) {
-
     case fromLabels.LabelsActionTypes.LoadLabels: {
       const labels = action.payload;
       let index = -1;
@@ -47,4 +46,3 @@ export function reducer(
 
 export const getLabelsEntities = (state: LabelState) => state.entities;
 export const getLabelsLoaded = (state: LabelState) => state.loaded;
-

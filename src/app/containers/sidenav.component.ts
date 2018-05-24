@@ -1,13 +1,13 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
-import {Observable} from 'rxjs/Observable';
-import {first, map} from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
 
 import * as fromStore from '../store';
 import * as fromRoot from '@app/store';
-import {Box, Label, Picture} from '@app/models';
+import { Box, Label, Picture } from '@app/models';
 import { PicturesService } from '@app/services';
 
 @Component({
@@ -39,7 +39,8 @@ import { PicturesService } from '@app/services';
       </mat-sidenav-content>
     </mat-sidenav-container>
   `,
-  styles: [`
+  styles: [
+    `
     mat-sidenav {
       box-shadow: 3px 0 6px rgba(0, 0, 0, .24);
       padding-bottom: 72px;
@@ -50,11 +51,10 @@ import { PicturesService } from '@app/services';
     mat-sidenav-container {
       height: 100%;
     }
-  `]
-
+  `,
+  ],
 })
 export class SidenavComponent implements OnInit {
-
   pictures$: Observable<Picture[]>;
   picturesData$: Observable<string[]>;
   labelJsonUri$: Observable<any>;
@@ -65,35 +65,36 @@ export class SidenavComponent implements OnInit {
   constructor(
     private sanitizer: DomSanitizer,
     private store: Store<fromStore.State>,
-    private picturesService: PicturesService,
+    private picturesService: PicturesService
   ) {
-    this.pictures$ = this.store.select(fromRoot.getAllPictures);
-    this.boxes$ = this.store.select(fromRoot.getAllBoxes);
-    this.labels$ = this.store.select(fromRoot.getAllLabels);
+    this.pictures$ = this.store.pipe(select(fromRoot.getAllPictures));
+    this.boxes$ = this.store.pipe(select(fromRoot.getAllBoxes));
+    this.labels$ = this.store.pipe(select(fromRoot.getAllLabels));
     this.picturesData$ = this.picturesService.getPictureData();
-    this.labelJsonUri$ = this.store.select(fromRoot.getLabelledPictures).pipe(
-      map(labelledPictures => this.toJsonUri(labelledPictures)),
+    this.labelJsonUri$ = this.store.pipe(
+      select(fromRoot.getLabelledPictures),
+      map(labelledPictures => this.toJsonUri(labelledPictures))
     );
     this.downloadName$ = this.labelJsonUri$.pipe(
-      map(() => `${Date.now()}.csv`),
+      map(() => `${Date.now()}.csv`)
     );
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   uploadPictures(event) {
     // Store devtools cannot serialize event.target.files and thus we must
     // handle async operation here.
     this.store.dispatch(new fromStore.LoadPictures());
-    this.picturesService.uploadPictures(event.target.files)
-      .then((pictures) => {
-          this.picturesService.setPictureData(pictures.map(p => p.data));
-          this.store.dispatch(new fromStore.LoadPicturesSuccess(pictures.map(p => p.picture)));
-      }
-      ).catch((err) =>
-        this.store.dispatch(new fromStore.LoadPicturesFail(err))
-      );
+    this.picturesService
+      .uploadPictures(event.target.files)
+      .then(pictures => {
+        this.picturesService.setPictureData(pictures.map(p => p.data));
+        this.store.dispatch(
+          new fromStore.LoadPicturesSuccess(pictures.map(p => p.picture))
+        );
+      })
+      .catch(err => this.store.dispatch(new fromStore.LoadPicturesFail(err)));
   }
 
   removePictures() {
@@ -108,30 +109,27 @@ export class SidenavComponent implements OnInit {
   }
 
   private ConvertToCSV(objArray) {
-    const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
+    const array =
+      typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
     let header = 'filename,';
     let boxes;
     let labels;
     let csvResult = '';
 
     // Creating CSV header
-    this.labels$.pipe(
-      first(),
-    ).subscribe(lbs => {
+    this.labels$.pipe(first()).subscribe(lbs => {
       labels = lbs;
-      lbs.map( label => {
-          header += label.name + ',';
-        }
-      ); });
+      lbs.map(label => {
+        header += label.name + ',';
+      });
+    });
 
-    this.boxes$.pipe(
-      first(),
-    ).subscribe(bxs => {
+    this.boxes$.pipe(first()).subscribe(bxs => {
       boxes = bxs;
-      bxs.map( box => {
-          header += box.name + ',';
-        }
-      ); });
+      bxs.map(box => {
+        header += box.name + ',';
+      });
+    });
     csvResult = header.substring(0, header.length - 1) + '\r\n';
 
     // Creating CSV data
@@ -148,14 +146,19 @@ export class SidenavComponent implements OnInit {
         if (array[i].boxes[boxes[iB].name] === undefined) {
           line += ',';
         } else {
-          line += array[i].boxes[boxes[iB].name].x0 + '-' +
-                  array[i].boxes[boxes[iB].name].y0 + '-' +
-                  array[i].boxes[boxes[iB].name].x1 + '-' +
-                  array[i].boxes[boxes[iB].name].y1 + ',';
+          line +=
+            array[i].boxes[boxes[iB].name].x0 +
+            '-' +
+            array[i].boxes[boxes[iB].name].y0 +
+            '-' +
+            array[i].boxes[boxes[iB].name].x1 +
+            '-' +
+            array[i].boxes[boxes[iB].name].y1 +
+            ',';
         }
       }
 
-      csvResult +=  line.substring(0, line.length - 1) + '\r\n';
+      csvResult += line.substring(0, line.length - 1) + '\r\n';
     }
     return csvResult;
   }

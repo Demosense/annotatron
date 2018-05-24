@@ -1,4 +1,9 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 
 @Component({
   selector: 'app-sidenav-download-element',
@@ -9,16 +14,13 @@ import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
       <p mat-line>Download</p>
     </a>
   `,
-  styles: []
+  styles: [],
 })
 export class SidenavDownloadElementComponent implements OnInit {
-
   @Input() labelJsonUri;
   @Input() downloadName;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

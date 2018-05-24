@@ -1,7 +1,8 @@
 import {
   ActionReducerMap,
   ActionReducer,
-  MetaReducer, createFeatureSelector,
+  MetaReducer,
+  createFeatureSelector,
 } from '@ngrx/store';
 
 import {
@@ -53,8 +54,10 @@ export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
   };
 }
 
-export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-  return localStorageSync({keys: ['configurer'], rehydrate: true})(reducer);
+export function localStorageSyncReducer(
+  reducer: ActionReducer<any>
+): ActionReducer<any> {
+  return localStorageSync({ keys: ['configurer'], rehydrate: true })(reducer);
 }
 
 export const metaReducers: MetaReducer<State>[] = !environment.production

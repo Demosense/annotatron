@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import { Effect, Actions } from '@ngrx/effects';
+import { of } from 'rxjs';
 import { tap, map, mergeMap, catchError, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
 import * as configurerActions from '../actions/configurer.actions';
 import * as labelActions from '../actions/labels.actions';
@@ -11,10 +11,9 @@ import { ConfigurationService } from '@app/services';
 
 @Injectable()
 export class ConfigurerEffects {
-
   constructor(
     private actions$: Actions,
-    private configurationService: ConfigurationService,
+    private configurationService: ConfigurationService
   ) {}
 
   /**
@@ -30,17 +29,18 @@ export class ConfigurerEffects {
     .ofType(configurerActions.ConfigurerActionsTypes.ParseConfig)
     .pipe(
       map((action: configurerActions.ParseConfig) => action.payload),
-      switchMap(x => of(x)
-          .pipe(
-            map(configString => this.configurationService.parseConfigString(configString)),
-            mergeMap(({ labels, boxes }) => [
-              new labelActions.LoadLabels(labels),
-              new boxesActions.LoadBoxes(boxes),
-              new configurerActions.ParseConfigSuccess(),
-            ]),
-            catchError( err => of(new configurerActions.ParseConfigFail(err))),
-          )
+      switchMap(x =>
+        of(x).pipe(
+          map(configString =>
+            this.configurationService.parseConfigString(configString)
+          ),
+          mergeMap(({ labels, boxes }) => [
+            new labelActions.LoadLabels(labels),
+            new boxesActions.LoadBoxes(boxes),
+            new configurerActions.ParseConfigSuccess(),
+          ]),
+          catchError(err => of(new configurerActions.ParseConfigFail(err)))
+        )
       )
     );
-
 }

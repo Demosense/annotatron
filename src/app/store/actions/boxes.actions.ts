@@ -22,7 +22,4 @@ export class SelectedBox implements Action {
   constructor(public payload: Box) {}
 }
 
-export type BoxesActions =
-  LoadBoxes |
-  RemoveBoxes |
-  SelectedBox;
+export type BoxesActions = LoadBoxes | RemoveBoxes | SelectedBox;

@@ -1,4 +1,9 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { Picture } from '@app/models';
 
 @Component({
@@ -11,16 +16,13 @@ import { Picture } from '@app/models';
       [pictureData]="picturesData[picture.id]">
     </app-sidenav-picture-element>
   `,
-  styles: []
+  styles: [],
 })
 export class SidenavPictureListComponent implements OnInit {
-
   @Input() pictures: Picture[];
   @Input() picturesData: string[];
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

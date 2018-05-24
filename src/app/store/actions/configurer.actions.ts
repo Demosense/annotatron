@@ -21,6 +21,6 @@ export class ParseConfigFail implements Action {
 }
 
 export type ConfigurerParserActions =
-  ParseConfig |
-  ParseConfigSuccess |
-  ParseConfigFail;
+  | ParseConfig
+  | ParseConfigSuccess
+  | ParseConfigFail;
