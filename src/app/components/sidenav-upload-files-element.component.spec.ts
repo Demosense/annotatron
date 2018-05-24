@@ -8,9 +8,8 @@ describe('SidenavUploadFilesElementComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SidenavUploadFilesElementComponent ]
-    })
-    .compileComponents();
+      declarations: [SidenavUploadFilesElementComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -8,9 +8,8 @@ describe('BoxListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BoxListComponent ]
-    })
-    .compileComponents();
+      declarations: [BoxListComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

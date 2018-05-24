@@ -6,7 +6,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
+import {
+  RouterStateSerializer,
+  StoreRouterConnectingModule,
+} from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { SharedModule } from '@app/shared/';
@@ -52,7 +55,7 @@ export const routes: Routes = [
   {
     path: '**',
     redirectTo: '',
-  }
+  },
 ];
 
 @NgModule({
@@ -90,8 +93,8 @@ export const routes: Routes = [
   providers: [
     ...services,
     { provide: RouterStateSerializer, useClass: CustomSerializer },
-    ...fromGuards.guards
+    ...fromGuards.guards,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

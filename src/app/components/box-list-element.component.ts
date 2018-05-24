@@ -1,4 +1,10 @@
-import {ChangeDetectionStrategy, Component, HostListener, Input, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostListener,
+  Input,
+  OnInit,
+} from '@angular/core';
 
 import { Box } from '@app/models';
 
@@ -11,23 +17,22 @@ import { Box } from '@app/models';
       <h4 mat-line>{{box.name}}</h4>
     </mat-list-item>
   `,
-  styles: [`
+  styles: [
+    `
       .selected {
         color: lightgrey;
         -webkit-box-shadow:inset 0px 0px 0px 25px #b0b0b0;
         -moz-box-shadow:inset 0px 0px 0px 25px #b0b0b0;
         box-shadow:inset 0px 0px 0px 25px #b0b0b0;
       }
-    `]
+    `,
+  ],
 })
 export class BoxListElementComponent implements OnInit {
-
   @Input() box: Box;
   @Input() selected: boolean;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

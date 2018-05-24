@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 import * as fromRoot from '@app/store';
 
@@ -14,20 +14,18 @@ import * as fromRoot from '@app/store';
      </mat-card-content>
     </mat-card>
   `,
-  styles: []
+  styles: [],
 })
 export class ConfigureComponent implements OnInit {
-
   configString$: Observable<string>;
 
-  constructor(
-    private store: Store<fromRoot.State>,
-  ) {
-    this.configString$ = this.store.select(fromRoot.getConfigurerConfigString);
+  constructor(private store: Store<fromRoot.State>) {
+    this.configString$ = this.store.pipe(
+      select(fromRoot.getConfigurerConfigString)
+    );
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   parseFile(configString: string) {
     // We can do this because all actions are synchronous.
@@ -35,5 +33,4 @@ export class ConfigureComponent implements OnInit {
     this.store.dispatch(new fromRoot.RemoveLabels());
     this.store.dispatch(new fromRoot.ParseConfig(configString));
   }
-
 }

@@ -1,4 +1,11 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 
 @Component({
   selector: 'app-toolbar-button',
@@ -8,16 +15,13 @@ import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output}
       <mat-icon>{{ icon }}</mat-icon>
     </button>
   `,
-  styles: []
+  styles: [],
 })
 export class ToolbarButtonComponent implements OnInit {
-
   @Input() icon = '';
   @Output() navigate = new EventEmitter();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

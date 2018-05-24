@@ -8,9 +8,8 @@ describe('SidenavPictureElementComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SidenavPictureElementComponent ]
-    })
-    .compileComponents();
+      declarations: [SidenavPictureElementComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -4,9 +4,9 @@ import {
   HostListener,
   OnInit,
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { first, map, combineLatest, withLatestFrom } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 
 import { Box, Label, Picture } from '@app/models';
 import * as fromRoot from '@app/store';
@@ -110,12 +110,12 @@ export class MainComponent implements OnInit {
     private store: Store<fromRoot.State>,
     private picturesService: PicturesService
   ) {
-    this.boxes$ = this.store.select(fromRoot.getAllBoxes);
-    this.labels$ = this.store.select(fromRoot.getAllLabels);
-    this.boxEntities$ = this.store.select(fromRoot.getBoxesEntities);
-    this.picture$ = this.store.select(fromRoot.getSelectedPicture);
-    this.pictures$ = this.store.select(fromRoot.getAllPictures);
-    this.selectedBox$ = this.store.select(fromRoot.getSelectedBox);
+    this.boxes$ = this.store.pipe(select(fromRoot.getAllBoxes));
+    this.labels$ = this.store.pipe(select(fromRoot.getAllLabels));
+    this.boxEntities$ = this.store.pipe(select(fromRoot.getBoxesEntities));
+    this.picture$ = this.store.pipe(select(fromRoot.getSelectedPicture));
+    this.pictures$ = this.store.pipe(select(fromRoot.getAllPictures));
+    this.selectedBox$ = this.store.pipe(select(fromRoot.getSelectedBox));
     this.pictureData$ = this.picturesService
       .getPictureData()
       .pipe(

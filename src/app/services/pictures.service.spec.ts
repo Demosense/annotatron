@@ -5,11 +5,14 @@ import { PicturesService } from './pictures.service';
 describe('PicturesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [PicturesService]
+      providers: [PicturesService],
     });
   });
 
-  it('should be created', inject([PicturesService], (service: PicturesService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([PicturesService], (service: PicturesService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

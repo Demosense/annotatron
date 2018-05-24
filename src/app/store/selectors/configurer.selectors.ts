@@ -3,7 +3,8 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromConfigurer from '../reducers/configurer.reducer';
 
 export const getConfigurerState = createFeatureSelector<
-  fromConfigurer.ConfigurerState>('configurer');
+  fromConfigurer.ConfigurerState
+>('configurer');
 
 export const getConfigurerConfigString = createSelector(
   getConfigurerState,
@@ -24,4 +25,3 @@ export const getConfigurerError = createSelector(
   getConfigurerState,
   fromConfigurer.getConfigurerError
 );
-

@@ -32,7 +32,7 @@ export function reducer(
         ...state,
         parsing: false,
         parsed: true,
-        error: ''
+        error: '',
       };
 
     case fromConfigurer.ConfigurerActionsTypes.ParseConfigFail:
@@ -47,7 +47,8 @@ export function reducer(
   return state;
 }
 
-export const getConfigurerConfigString = (state: ConfigurerState) => state.confString;
+export const getConfigurerConfigString = (state: ConfigurerState) =>
+  state.confString;
 export const getConfigurerParsing = (state: ConfigurerState) => state.parsing;
 export const getConfigurerParsed = (state: ConfigurerState) => state.parsed;
 export const getConfigurerError = (state: ConfigurerState) => state.error;

@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Picture } from '@app/models';
 
 @Injectable()
 export class PicturesService {
-
   private stream: BehaviorSubject<string[]>;
 
   constructor() {
@@ -20,11 +18,15 @@ export class PicturesService {
     return this.stream.asObservable();
   }
 
-
-  public uploadPictures(files: FileList): Promise<{ data: string, picture: Picture }[]> {
+  public uploadPictures(
+    files: FileList
+  ): Promise<{ data: string; picture: Picture }[]> {
     const validImageTypes = ['image/jpeg', 'image/png'];
-    const uploads: Promise<{ data: string, picture: Picture }>[] =
-      Array.from(files).filter(file => validImageTypes.includes(file.type)).map((file: any) => {
+    const uploads: Promise<{ data: string; picture: Picture }>[] = Array.from(
+      files
+    )
+      .filter(file => validImageTypes.includes(file.type))
+      .map((file: any) => {
         const reader = new FileReader();
         return new Promise((resolve, reject) => {
           reader.onload = (e: any) => {
@@ -38,11 +40,11 @@ export class PicturesService {
                   width: image.width,
                   height: image.height,
                   labels: [],
-                  boxes: []
-                }
+                  boxes: [],
+                },
               });
           };
-          reader.onerror = (err) => reject(err);
+          reader.onerror = err => reject(err);
           reader.readAsDataURL(file);
         });
       });

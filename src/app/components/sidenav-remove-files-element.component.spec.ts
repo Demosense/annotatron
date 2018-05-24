@@ -8,9 +8,8 @@ describe('SidenavRemoveFilesElementComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SidenavRemoveFilesElementComponent ]
-    })
-    .compileComponents();
+      declarations: [SidenavRemoveFilesElementComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

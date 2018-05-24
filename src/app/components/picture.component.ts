@@ -7,9 +7,10 @@ import {
   OnChanges,
   OnInit,
   SimpleChanges,
-  ViewChild, ChangeDetectionStrategy
+  ViewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
-import {Box, BoxValue, Picture} from '@app/models';
+import { Box, BoxValue, Picture } from '@app/models';
 
 @Component({
   selector: 'app-picture',
@@ -21,15 +22,14 @@ import {Box, BoxValue, Picture} from '@app/models';
             (mousemove)="mmEvent($event)">
     </canvas>
   `,
-  styles: []
+  styles: [],
 })
 export class PictureComponent implements OnInit, OnChanges {
-
   @Input() picture: Picture;
   @Input() pictureData: string;
   @Input() boxes: BoxValue[];
   @Input() selectedBox: Box;
-  @Input() boxesEntities: { id: number; box: Box};
+  @Input() boxesEntities: { id: number; box: Box };
   @Output() boxDrawn = new EventEmitter<any>();
   @ViewChild('layout') canvas: ElementRef;
 
@@ -42,7 +42,7 @@ export class PictureComponent implements OnInit, OnChanges {
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ((this.picture) && (this.picture.id !== this.currentPictureId)) {
+    if (this.picture && this.picture.id !== this.currentPictureId) {
       this.currentPictureId = this.picture.id;
       const source = new Image();
       source.crossOrigin = 'Anonymous';
@@ -54,8 +54,12 @@ export class PictureComponent implements OnInit, OnChanges {
       this.canvas.nativeElement.getContext('2d').setLineDash([6]);
       Object.keys(this.boxes).forEach(key => {
         const { x0, y0, x1, y1 } = this.boxes[key];
-        this.canvas.nativeElement.getContext('2d').strokeStyle = this.boxesEntities[this.boxes[key].id].color;
-        this.canvas.nativeElement.getContext('2d').strokeRect(x0, y0, x1 - x0, y1 - y0);
+        this.canvas.nativeElement.getContext(
+          '2d'
+        ).strokeStyle = this.boxesEntities[this.boxes[key].id].color;
+        this.canvas.nativeElement
+          .getContext('2d')
+          .strokeRect(x0, y0, x1 - x0, y1 - y0);
       });
     }
   }
@@ -76,11 +80,18 @@ export class PictureComponent implements OnInit, OnChanges {
       const w = e.layerX - x;
       const h = e.layerY - y;
       this.canvas.nativeElement.getContext('2d').setLineDash([6]);
-      this.canvas.nativeElement.getContext('2d').strokeStyle = this.selectedBox.color;
+      this.canvas.nativeElement.getContext(
+        '2d'
+      ).strokeStyle = this.selectedBox.color;
       this.canvas.nativeElement.getContext('2d').strokeRect(x, y, w, h);
       this.drawBoxes();
       this.drag = false;
-      this.boxDrawn.emit({x0: this.startX, y0: this.startY, x1: e.layerX, y1: e.layerY});
+      this.boxDrawn.emit({
+        x0: this.startX,
+        y0: this.startY,
+        x1: e.layerX,
+        y1: e.layerY,
+      });
     }
   }
 
@@ -92,13 +103,17 @@ export class PictureComponent implements OnInit, OnChanges {
       this.canvas.nativeElement.getContext('2d').canvas.width = source.width;
       this.canvas.nativeElement.getContext('2d').drawImage(source, 0, 0);
       this.canvas.nativeElement.getContext('2d').setLineDash([6]);
-      this.canvas.nativeElement.getContext('2d').strokeStyle = this.selectedBox.color;
-      this.canvas.nativeElement.getContext('2d').strokeRect(
-        this.startX,
-        this.startY,
-        e.layerX - this.startX,
-        e.layerY - this.startY
-      );
+      this.canvas.nativeElement.getContext(
+        '2d'
+      ).strokeStyle = this.selectedBox.color;
+      this.canvas.nativeElement
+        .getContext('2d')
+        .strokeRect(
+          this.startX,
+          this.startY,
+          e.layerX - this.startX,
+          e.layerY - this.startY
+        );
       this.drawBoxes();
     }
   }
@@ -109,8 +124,12 @@ export class PictureComponent implements OnInit, OnChanges {
 
       if (id !== this.selectedBox.id) {
         this.canvas.nativeElement.getContext('2d').strokeStyle = 'red';
-        this.canvas.nativeElement.getContext('2d').strokeStyle = this.boxesEntities[this.boxes[key].id].color;
-        this.canvas.nativeElement.getContext('2d').strokeRect(x0, y0, x1 - x0, y1 - y0);
+        this.canvas.nativeElement.getContext(
+          '2d'
+        ).strokeStyle = this.boxesEntities[this.boxes[key].id].color;
+        this.canvas.nativeElement
+          .getContext('2d')
+          .strokeRect(x0, y0, x1 - x0, y1 - y0);
       }
     });
   }

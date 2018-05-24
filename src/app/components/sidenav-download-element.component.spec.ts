@@ -8,9 +8,8 @@ describe('SidenavDownloadElementComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SidenavDownloadElementComponent ]
-    })
-    .compileComponents();
+      declarations: [SidenavDownloadElementComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

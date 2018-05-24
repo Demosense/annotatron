@@ -16,6 +16,4 @@ export class RemoveLabels implements Action {
   readonly type = LabelsActionTypes.RemoveLabels;
 }
 
-export type LabelsActions =
-  LoadLabels |
-  RemoveLabels;
+export type LabelsActions = LoadLabels | RemoveLabels;

@@ -4,4 +4,4 @@ import * as fromRouter from '@ngrx/router-store';
 
 export const getRouterState = createFeatureSelector<
   fromRouter.RouterReducerState<RouterStateUrl>
-  >('routerReducer');
+>('routerReducer');

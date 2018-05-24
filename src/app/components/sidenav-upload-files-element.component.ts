@@ -1,4 +1,12 @@
-import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'app-sidenav-upload-files-element',
@@ -10,17 +18,15 @@ import {ChangeDetectionStrategy, Component, ElementRef, EventEmitter, OnInit, Ou
       <input type="file" (change)="uploadPictures($event)" multiple #inputFiles>
     </a>
   `,
-  styles: []
+  styles: [],
 })
 export class SidenavUploadFilesElementComponent implements OnInit {
-
   @Output() upload = new EventEmitter<any>();
   @ViewChild('inputFiles') nativeInputFile: ElementRef;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public uploadPictures(event) {
     this.upload.emit(event);
@@ -30,4 +36,3 @@ export class SidenavUploadFilesElementComponent implements OnInit {
     this.nativeInputFile.nativeElement.click();
   }
 }
-

@@ -1,4 +1,11 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -22,16 +29,19 @@ import { FormControl, FormGroup } from '@angular/forms';
       </div>
     </form>
   `,
-  styles: []
+  styles: [],
 })
 export class ConfigureEditorComponent implements OnInit {
-
   readonly FORM_CONTROL_CONFIG_STRING: string = 'configString';
 
   form: FormGroup;
 
-  @Input() set configString(value: string) {
-    this.form.patchValue({ [this.FORM_CONTROL_CONFIG_STRING]: value || '' }, { emitEvent: false });
+  @Input()
+  set configString(value: string) {
+    this.form.patchValue(
+      { [this.FORM_CONTROL_CONFIG_STRING]: value || '' },
+      { emitEvent: false }
+    );
   }
 
   @Output() saveConfig = new EventEmitter<string>();
@@ -42,8 +52,7 @@ export class ConfigureEditorComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   private save() {
     this.saveConfig.emit(this.form.value[this.FORM_CONTROL_CONFIG_STRING]);

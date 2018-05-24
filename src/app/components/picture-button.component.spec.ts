@@ -8,9 +8,8 @@ describe('PictureButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PictureButtonComponent ]
-    })
-    .compileComponents();
+      declarations: [PictureButtonComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

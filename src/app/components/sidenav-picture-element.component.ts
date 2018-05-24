@@ -1,4 +1,9 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { Picture } from '@app/models';
@@ -12,17 +17,15 @@ import { Picture } from '@app/models';
       <h4 mat-line>{{ picture.file | slice:0:10 }}</h4>
     </a>
   `,
-  styles: []
+  styles: [],
 })
 export class SidenavPictureElementComponent implements OnInit {
-
   @Input() picture: Picture;
   @Input() pictureData: string;
 
-  constructor(private sanitizer: DomSanitizer) { }
+  constructor(private sanitizer: DomSanitizer) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public getImage() {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.pictureData);
